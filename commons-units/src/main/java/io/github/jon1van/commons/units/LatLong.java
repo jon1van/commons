@@ -60,26 +60,24 @@ public class LatLong implements HasLatLong, Comparable<LatLong> {
         return ((double) latOrLongAsInt) / 10_000_000.0;
     }
 
-    /** All public construction requires using LatLong's compress() method. */
+    /// All public construction requires using LatLong's compress() method.
     public LatLong(Double latitude, Double longitude) {
         // go through LatLong to get bounds checking
         this(LatLong128.of(latitude, longitude));
     }
 
-    /**
-     * Create a new LatLong object.
-     *
-     * @param latitude  A non-null Latitude value from (-90 to 90)
-     * @param longitude A non-null Longitude value from (-180 to 180)
-     *
-     * @return A newly created LatLong object (this is a lossy compression)
-     */
+    /// Create a new LatLong object.
+    ///
+    /// @param latitude  A non-null Latitude value from (-90 to 90)
+    /// @param longitude A non-null Longitude value from (-180 to 180)
+    ///
+    /// @return A newly created LatLong object (this is a lossy compression)
     public static LatLong of(Double latitude, Double longitude) {
         return new LatLong(latitude, longitude);
     }
 
 
-    /** All public construction requires using LatLong's compress() method. */
+    /// All public construction requires using LatLong's compress() method.
     LatLong(LatLong128 location) {
         this(encodeAsInt(location.latitude()), encodeAsInt(location.longitude()));
     }
@@ -96,14 +94,12 @@ public class LatLong implements HasLatLong, Comparable<LatLong> {
         return new LatLong(loc.latitude(), loc.longitude());
     }
 
-    /**
-     * Parse a LatLong from a 64-bit primitive long.
-     *
-     * @param LatLongBits The "latitudeAsInt" is in the upper 32 bits and the "longitudeAsInt" is
-     *                      in the lower 32 bits.
-     *
-     * @return A new created LatLong object
-     */
+    /// Parse a LatLong from a 64-bit primitive long.
+    ///
+    /// @param LatLongBits The "latitudeAsInt" is in the upper 32 bits and the "longitudeAsInt" is
+    ///                      in the lower 32 bits.
+    ///
+    /// @return A new created LatLong object
     public static LatLong fromPrimitiveLong(long LatLongBits) {
 
         int lngBits = (int) LatLongBits;
@@ -112,13 +108,11 @@ public class LatLong implements HasLatLong, Comparable<LatLong> {
         return new LatLong(latBits, lngBits);
     }
 
-    /**
-     * Create a new LatLong object.
-     *
-     * @param exactly8Bytes The bytes defining two ints: {latitudeAsInt, longitudeAsInt}
-     *
-     * @return A new LatLong object.
-     */
+    /// Create a new LatLong object.
+    ///
+    /// @param exactly8Bytes The bytes defining two ints: {latitudeAsInt, longitudeAsInt}
+    ///
+    /// @return A new LatLong object.
     public static LatLong fromBytes(byte[] exactly8Bytes) {
         requireNonNull(exactly8Bytes);
         checkArgument(exactly8Bytes.length == 8, "Must use exactly 8 bytes");
@@ -129,22 +123,18 @@ public class LatLong implements HasLatLong, Comparable<LatLong> {
         return new LatLong(latitudeAsInt, longitudeAsInt);
     }
 
-    /**
-     * Create a new LatLong object.
-     *
-     * @param base64Encoding The Base64 safe and URL safe (no padding) encoding of a LatLong's
-     *                       byte[]
-     *
-     * @return A new LatLong object.
-     */
+    /// Create a new LatLong object.
+    ///
+    /// @param base64Encoding The Base64 safe and URL safe (no padding) encoding of a LatLong's
+    ///                       byte[]
+    ///
+    /// @return A new LatLong object.
     public static LatLong fromBase64Str(String base64Encoding) {
         return LatLong.fromBytes(Base64.getUrlDecoder().decode(base64Encoding));
     }
 
-    /**
-     * Convert this compressed LatLong into a LatLong. This provides access to the "distance and
-     * direction" functions that LatLong supports but LatLong does not.
-     */
+    /// Convert this compressed LatLong into a LatLong. This provides access to the "distance and
+    /// direction" functions that LatLong supports but LatLong does not.
     public LatLong128 inflate() {
         return LatLong128.of(latitude(), longitude());
     }
@@ -158,21 +148,19 @@ public class LatLong implements HasLatLong, Comparable<LatLong> {
         return decodeInt(longitudeAsInt);
     }
 
-    /**
-     * @return This LatLong written with 7 digits after the decimal point. Six digits are shown
-     *     because all additional digits are unreliable due to the lossy compression.
-     */
+    /// @return This LatLong written with 7 digits after the decimal point. Six digits are shown
+    ///     because all additional digits are unreliable due to the lossy compression.
     @Override
     public String toString() {
         return "(" + String.format("%.7f", latitude()) + "," + String.format("%.7f", longitude()) + ")";
     }
 
-    /** @return This LatLong as a 64-bit long (built by bit packing 2 32-bit int values). */
+    /// @return This LatLong as a 64-bit long (built by bit packing 2 32-bit int values).
     public long toPrimitiveLong() {
         return pack(latitudeAsInt, longitudeAsInt);
     }
 
-    /** Combine the bits from two 32-bit int primitives into a single 64 bit long. */
+    /// Combine the bits from two 32-bit int primitives into a single 64 bit long.
     static long pack(int upperInt, int lowerInt) {
 
         long upperBits = ((long) upperInt) << 32;
@@ -182,21 +170,17 @@ public class LatLong implements HasLatLong, Comparable<LatLong> {
         return upperBits | lowerBits;
     }
 
-    /**
-     * @return This LatLong as a byte[] of length 8. The array can be interpreted as a single
-     *     8-byte long OR 2 4-byte ints that contain the "int encoded" latitude and longitude
-     *     values. These 2 encodings are equivalent.
-     */
+    /// @return This LatLong as a byte[] of length 8. The array can be interpreted as a single
+    ///     8-byte long OR 2 4-byte ints that contain the "int encoded" latitude and longitude
+    ///     values. These 2 encodings are equivalent.
     public byte[] toBytes() {
         return ByteBuffer.allocate(8).putLong(toPrimitiveLong()).array();
         // SAME AS
         // ByteBuffer.allocate(8).putInt(latitudeAsInt).putInt(longitudeAsInt).array();
     }
 
-    /**
-     * @return An 11 character Base64 file and url safe encoding of this LatLong's byte[] (e.g.,
-     *     "KUJSEZn8uzs", "-NWDIbs8BTQ", or "aHpvnvpRj8Y")
-     */
+    /// @return An 11 character Base64 file and url safe encoding of this LatLong's byte[] (e.g.,
+    ///     "KUJSEZn8uzs", "-NWDIbs8BTQ", or "aHpvnvpRj8Y")
     public String toBase64() {
         return Base64.getUrlEncoder().withoutPadding().encodeToString(toBytes());
     }

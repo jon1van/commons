@@ -16,13 +16,11 @@ import static io.github.jon1van.commons.units.Distance.Unit.*;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-/**
- * This Distance class is intended to make working with Distances less error prone because (1) all
- * Distance objects are immutable and (2) the unit is always required and always accounted for.
- * <p>
- * This class is extremely similar in spirit and design to java.time.Duration and
- * java.time.Instant.
- */
+/// This Distance class is intended to make working with Distances less error prone because (1) all
+/// Distance objects are immutable and (2) the unit is always required and always accounted for.
+///
+/// This class is extremely similar in spirit and design to java.time.Duration and
+/// java.time.Instant.
 public class Distance implements Comparable<Distance> {
 
     // There is currently a quirk when dist.equals(ZERO) will fail if the units are different
@@ -46,13 +44,11 @@ public class Distance implements Comparable<Distance> {
         this(0.0, Unit.NAUTICAL_MILES);
     }
 
-    /**
-     * Create an Immutable Distance object that combines the amount and unit into a single quantity
-     * (ie 5 meters, 7 feet, or 1.3 nautical miles).
-     *
-     * @param amount An amount (cannot be NaN)
-     * @param unit   The Distance Unit (ie METERS, FEET, or NAUTICAL_MILES)
-     */
+    /// Create an Immutable Distance object that combines the amount and unit into a single quantity
+    /// (ie 5 meters, 7 feet, or 1.3 nautical miles).
+    ///
+    /// @param amount An amount (cannot be NaN)
+    /// @param unit   The Distance Unit (ie METERS, FEET, or NAUTICAL_MILES)
     public Distance(double amount, Unit unit) {
         this.amount = amount;
         checkArgument(!Double.isNaN(amount), "Distance values of \"Not a Number\" are not supported");
@@ -112,20 +108,16 @@ public class Distance implements Comparable<Distance> {
         return one.distanceTo(two);
     }
 
-    /**
-     * @return The unit this Distance was originally defined with.
-     */
+    /// @return The unit this Distance was originally defined with.
     public Unit nativeUnit() {
         return this.unit;
     }
 
-    /**
-     * Convert this Distance into the desired unit.
-     *
-     * @param desiredUnit A unit like Meters, Feet, or Nautical Miles
-     *
-     * @return This distance convert to a different unit.
-     */
+    /// Convert this Distance into the desired unit.
+    ///
+    /// @param desiredUnit A unit like Meters, Feet, or Nautical Miles
+    ///
+    /// @return This distance convert to a different unit.
     public double in(Unit desiredUnit) {
         return (this.unit == desiredUnit) ? amount : amount * desiredUnit.unitsPerMeter / this.unit.unitsPerMeter;
     }
@@ -198,16 +190,14 @@ public class Distance implements Comparable<Distance> {
         return this.amount >= otherDist.in(unit);
     }
 
-    /**
-     * @param otherDist A second distance
-     *
-     * @return The ratio between these distances
-     */
+    /// @param otherDist A second distance
+    ///
+    /// @return The ratio between these distances
     public double dividedBy(Distance otherDist) {
         return this.amount / otherDist.in(unit);
     }
 
-    /** @return The Speed required to travel this distance in this amount of time. */
+    /// @return The Speed required to travel this distance in this amount of time.
     public Speed dividedBy(Duration lengthOfTime) {
         return new Speed(this, lengthOfTime);
     }
@@ -256,26 +246,22 @@ public class Distance implements Comparable<Distance> {
         }
     }
 
-    /**
-     * @param digitsAfterDecimalPlace The number of digits after the decimal place to use.
-     *
-     * @return A String like "1.00m", or "5.143nm"
-     */
+    /// @param digitsAfterDecimalPlace The number of digits after the decimal place to use.
+    ///
+    /// @return A String like "1.00m", or "5.143nm"
     public String toString(int digitsAfterDecimalPlace) {
         return String.format("%." + digitsAfterDecimalPlace + "f" + unit.abbreviation, amount);
     }
 
-    /**
-     * Create a Distance object by parsing a String. This method works with both Distance.toString
-     * methods.
-     *
-     * @param parseMe A String like "5.0 km", "5.0km", or "-522ft".
-     *
-     * @return A correctly parsed Distance object
-     * @throws NullPointerException     On null input
-     * @throws IllegalArgumentException When a unit cannot be determined
-     * @throws NumberFormatException    When a quantity can't be extracted
-     */
+    /// Create a Distance object by parsing a String. This method works with both Distance.toString
+    /// methods.
+    ///
+    /// @param parseMe A String like "5.0 km", "5.0km", or "-522ft".
+    ///
+    /// @return A correctly parsed Distance object
+    /// @throws NullPointerException     On null input
+    /// @throws IllegalArgumentException When a unit cannot be determined
+    /// @throws NumberFormatException    When a quantity can't be extracted
     public static Distance fromString(String parseMe) {
         checkNotNull(parseMe);
 
@@ -294,13 +280,11 @@ public class Distance implements Comparable<Distance> {
         return Distance.of(amount, unit);
     }
 
-    /**
-     * Matches the end of a String with the abbreviation of one of the Distance.Unit types
-     *
-     * @param parseMe A String like "5.0 km", "km", "22ft", or "ft"
-     *
-     * @return The correct Distance.Unit or null if no match can be found.
-     */
+    /// Matches the end of a String with the abbreviation of one of the Distance.Unit types
+    ///
+    /// @param parseMe A String like "5.0 km", "km", "22ft", or "ft"
+    ///
+    /// @return The correct Distance.Unit or null if no match can be found.
     public static Distance.Unit unitFromString(String parseMe) {
 
         for (Unit unit : Distance.Unit.values()) {

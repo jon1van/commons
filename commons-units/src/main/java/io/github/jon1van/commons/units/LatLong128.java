@@ -44,12 +44,10 @@ public class LatLong128 implements HasLatLong, Comparable<LatLong128> {
         this(0.0, 0.0);
     }
 
-    /**
-     * Create a new LatLong object.
-     *
-     * @param latitude  A non-null Latitude value from (-90 to 90)
-     * @param longitude A non-null Longitude value from (-180 to 180)
-     */
+    /// Create a new LatLong object.
+    ///
+    /// @param latitude  A non-null Latitude value from (-90 to 90)
+    /// @param longitude A non-null Longitude value from (-180 to 180)
     public LatLong128(Double latitude, Double longitude) {
         checkNotNull(latitude);
         checkNotNull(longitude);
@@ -59,25 +57,21 @@ public class LatLong128 implements HasLatLong, Comparable<LatLong128> {
         this.longitude = longitude;
     }
 
-    /**
-     * Create a new LatLong object.
-     *
-     * @param latitude  A non-null Latitude value from (-90 to 90)
-     * @param longitude A non-null Longitude value from (-180 to 180)
-     *
-     * @return A newly created LatLong object
-     */
+    /// Create a new LatLong object.
+    ///
+    /// @param latitude  A non-null Latitude value from (-90 to 90)
+    /// @param longitude A non-null Longitude value from (-180 to 180)
+    ///
+    /// @return A newly created LatLong object
     public static LatLong128 of(Double latitude, Double longitude) {
         return new LatLong128(latitude, longitude);
     }
 
-    /**
-     * Create a new LatLong object.
-     *
-     * @param exactly16Bytes The bytes defining two doubles: {latitude, longitude}
-     *
-     * @return A new LatLong object.
-     */
+    /// Create a new LatLong object.
+    ///
+    /// @param exactly16Bytes The bytes defining two doubles: {latitude, longitude}
+    ///
+    /// @return A new LatLong object.
     public static LatLong128 fromBytes(byte[] exactly16Bytes) {
         requireNonNull(exactly16Bytes);
         checkArgument(exactly16Bytes.length == 16, "Must use exactly 16 bytes");
@@ -95,22 +89,18 @@ public class LatLong128 implements HasLatLong, Comparable<LatLong128> {
         return LatLong128.of(longitude, latitude);
     }
 
-    /**
-     * Create a new LatLong object.
-     *
-     * @param base64Encoding The Base64 safe and URL safe (no padding) encoding of a LatLong's byte[]
-     *
-     * @return A new LatLong object.
-     */
+    /// Create a new LatLong object.
+    ///
+    /// @param base64Encoding The Base64 safe and URL safe (no padding) encoding of a LatLong's byte[]
+    ///
+    /// @return A new LatLong object.
     public static LatLong128 fromBase64Str(String base64Encoding) {
         return LatLong128.fromBytes(Base64.getUrlDecoder().decode(base64Encoding));
     }
 
-    /**
-     * Throw an IllegalArgumentException is the latitude value is illegal
-     *
-     * @param latitude A value from (-90 to 90)
-     */
+    /// Throw an IllegalArgumentException is the latitude value is illegal
+    ///
+    /// @param latitude A value from (-90 to 90)
     public static void checkLatitude(double latitude) {
         /*
          * Note: do not use Preconditions.checkArgument, it is significantly slower because it
@@ -122,11 +112,9 @@ public class LatLong128 implements HasLatLong, Comparable<LatLong128> {
         }
     }
 
-    /**
-     * Throw an IllegalArgumentException is the longitude value is illegal
-     *
-     * @param longitude A value from (-180 to 180)
-     */
+    /// Throw an IllegalArgumentException is the longitude value is illegal
+    ///
+    /// @param longitude A value from (-180 to 180)
     public static void checkLongitude(double longitude) {
         /*
          * Note: do not use Preconditions.checkArgument, it is significantly slower because it
@@ -138,24 +126,20 @@ public class LatLong128 implements HasLatLong, Comparable<LatLong128> {
         }
     }
 
-    /**
-     * Clamps the provided latitude value to the closed range [-90,90]
-     *
-     * @param latitude A candidate latitude value that could be outside the legal range
-     *
-     * @return Math.min(90.0, Math.max (latitude, - 90.0));
-     */
+    /// Clamps the provided latitude value to the closed range [-90,90]
+    ///
+    /// @param latitude A candidate latitude value that could be outside the legal range
+    ///
+    /// @return Math.min(90.0, Math.max (latitude, - 90.0));
     public static double clampLatitude(double latitude) {
         return Math.min(90.0, Math.max(latitude, -90.0));
     }
 
-    /**
-     * Clamps the provided longitude value to the closed range [-180,180]
-     *
-     * @param longitude A candidate longitude value that could be outside the legal range
-     *
-     * @return Math.min(180.0, Math.max (longitude, - 180.0));
-     */
+    /// Clamps the provided longitude value to the closed range [-180,180]
+    ///
+    /// @param longitude A candidate longitude value that could be outside the legal range
+    ///
+    /// @return Math.min(180.0, Math.max (longitude, - 180.0));
     public static double clampLongitude(double longitude) {
         return Math.min(180, Math.max(longitude, -180.0));
     }
@@ -173,60 +157,48 @@ public class LatLong128 implements HasLatLong, Comparable<LatLong128> {
         return "(" + latitude + "," + longitude + ")";
     }
 
-    /**
-     * @return This LatLong as a byte[] of length 16 containing the 8-byte doubles latitude and longitude.
-     */
+    /// @return This LatLong as a byte[] of length 16 containing the 8-byte doubles latitude and longitude.
     public byte[] toBytes() {
         return ByteBuffer.allocate(16).putDouble(latitude).putDouble(longitude).array();
     }
 
-    /**
-     * @return The Base64 file and url safe encoding of this LatLong's byte[] .
-     */
+    /// @return The Base64 file and url safe encoding of this LatLong's byte[] .
     public String toBase64() {
         return Base64.getUrlEncoder().withoutPadding().encodeToString(toBytes());
     }
 
-    /**
-     * @return a LatLong version of this LatLong. Saves 50% space, while losing accuracy at 7th decimal place.
-     */
+    /// @return a LatLong version of this LatLong. Saves 50% space, while losing accuracy at 7th decimal place.
     public LatLong compress() {
         return LatLong.fromLatLong(this);
     }
 
-    /**
-     * Find a new LatLong by projecting out from this location in a specific direction and distance.
-     *
-     * @param direction The direction of travel (in degrees)
-     * @param distance  The distance traveled (in nautical miles)
-     *
-     * @return The destination
-     */
+    /// Find a new LatLong by projecting out from this location in a specific direction and distance.
+    ///
+    /// @param direction The direction of travel (in degrees)
+    /// @param distance  The distance traveled (in nautical miles)
+    ///
+    /// @return The destination
     public LatLong128 projectOut(Double direction, Double distance) {
         return Spherical.projectOut(latitude, longitude, direction, distance);
     }
 
-    /**
-     * Find a new LatLong by projecting out from this location in a specific direction and distance.
-     *
-     * @param direction The direction of travel
-     * @param distance  The distance traveled
-     *
-     * @return The destination
-     */
+    /// Find a new LatLong by projecting out from this location in a specific direction and distance.
+    ///
+    /// @param direction The direction of travel
+    /// @param distance  The distance traveled
+    ///
+    /// @return The destination
     public LatLong128 project(Course direction, Distance distance) {
         return Spherical.projectOut(this, direction, distance);
     }
 
-    /**
-     * Find a new LatLong by projecting out from this location in a specific direction, distance, and curvature.
-     *
-     * @param direction The direction of travel
-     * @param distance  The distance traveled
-     * @param curvature The curvature of travel
-     *
-     * @return The destination
-     */
+    /// Find a new LatLong by projecting out from this location in a specific direction, distance, and curvature.
+    ///
+    /// @param direction The direction of travel
+    /// @param distance  The distance traveled
+    /// @param curvature The curvature of travel
+    ///
+    /// @return The destination
     public LatLong128 projectOut(Double direction, Double distance, Double curvature) {
         return Spherical.projectOut(latitude, longitude, direction, distance, curvature);
     }
@@ -266,16 +238,14 @@ public class LatLong128 implements HasLatLong, Comparable<LatLong128> {
         return true;
     }
 
-    /**
-     * ACCURATELY compute the average LatLong positions of these two locations. The underlying computation performs
-     * several somewhat expensive trig operations. Consequently, you should consider using the quick version if the
-     * distance between the two input points is small.
-     *
-     * @param one The first location
-     * @param two The second location
-     *
-     * @return The average location
-     */
+    /// ACCURATELY compute the average LatLong positions of these two locations. The underlying computation performs
+    /// several somewhat expensive trig operations. Consequently, you should consider using the quick version if the
+    /// distance between the two input points is small.
+    ///
+    /// @param one The first location
+    /// @param two The second location
+    ///
+    /// @return The average location
     public static LatLong128 avgLatLong(LatLong128 one, LatLong128 two) {
         checkNotNull(one);
         checkNotNull(two);
@@ -294,17 +264,15 @@ public class LatLong128 implements HasLatLong, Comparable<LatLong128> {
         return LatLong128.of(toDegrees(avgLat), toDegrees(avgLong));
     }
 
-    /**
-     * QUICKLY compute the arithmetic average of LatLong positions of these two locations. This computation does not
-     * reflect curvature of the earth but it does correct for the international date line. The difference between the
-     * result computed by this method and the result computed by avgLatLong grows as (1) the distance between the two
-     * input points grows and (2) the points move further and further away from the equator.
-     *
-     * @param one The first location
-     * @param two The second location
-     *
-     * @return The average location
-     */
+    /// QUICKLY compute the arithmetic average of LatLong positions of these two locations. This computation does not
+    /// reflect curvature of the earth but it does correct for the international date line. The difference between the
+    /// result computed by this method and the result computed by avgLatLong grows as (1) the distance between the two
+    /// input points grows and (2) the points move further and further away from the equator.
+    ///
+    /// @param one The first location
+    /// @param two The second location
+    ///
+    /// @return The average location
     public static LatLong128 quickAvgLatLong(LatLong128 one, LatLong128 two) {
         // latitude never wraps, so arithmatic average is fine
         double averageLat = (one.latitude + two.latitude) / 2.0;
@@ -317,15 +285,13 @@ public class LatLong128 implements HasLatLong, Comparable<LatLong128> {
         return LatLong128.of(averageLat, averageLong);
     }
 
-    /**
-     * ACCURATELY compute the average LatLong positions of these locations. The underlying computation performs several
-     * somewhat expensive trig operations when converting the LatLong data to Spherical Unit Vectors.
-     *
-     * @param locations An array of LatLong locations
-     *
-     * @return The average location
-     * @throws NoSuchElementException When locations is empty
-     */
+    /// ACCURATELY compute the average LatLong positions of these locations. The underlying computation performs several
+    /// somewhat expensive trig operations when converting the LatLong data to Spherical Unit Vectors.
+    ///
+    /// @param locations An array of LatLong locations
+    ///
+    /// @return The average location
+    /// @throws NoSuchElementException When locations is empty
     public static LatLong128 avgLatLong(LatLong128... locations) {
         requireNonNull(locations);
 
@@ -353,15 +319,13 @@ public class LatLong128 implements HasLatLong, Comparable<LatLong128> {
         return LatLong128.of(toDegrees(avgLat), toDegrees(avgLong));
     }
 
-    /**
-     * ACCURATELY compute the average LatLong positions of these locations. The underlying computation performs several
-     * somewhat expensive trig operations when converting the LatLong data to Spherical Unit Vectors.
-     *
-     * @param locations A collection of LatLong locations
-     *
-     * @return The average location
-     * @throws NoSuchElementException When locations is empty
-     */
+    /// ACCURATELY compute the average LatLong positions of these locations. The underlying computation performs several
+    /// somewhat expensive trig operations when converting the LatLong data to Spherical Unit Vectors.
+    ///
+    /// @param locations A collection of LatLong locations
+    ///
+    /// @return The average location
+    /// @throws NoSuchElementException When locations is empty
     public static LatLong128 avgLatLong(Collection<LatLong128> locations) {
         requireNonNull(locations);
 
@@ -369,20 +333,18 @@ public class LatLong128 implements HasLatLong, Comparable<LatLong128> {
         return avgLatLong(asArray);
     }
 
-    /**
-     * QUICKLY compute the ARITHMETIC average of these LatLong positions. This computation does not reflect curvature of
-     * the earth, but it does correct for the international date line. The difference between the result computed by
-     * this method and the result computed by {@code avgLatLong()} grows as (1) the path distance grows and (2) the path
-     * locations move further and further away from the equator.
-     * <p>
-     * This method is FASTER and LESS ACCURATE because it utilizes simple arithmetic instead of accurate trigonometric
-     * functions.
-     *
-     * @param locations An array of locations
-     *
-     * @return The average location
-     * @throws NoSuchElementException When locations is empty
-     */
+    /// QUICKLY compute the ARITHMETIC average of these LatLong positions. This computation does not reflect curvature of
+    /// the earth, but it does correct for the international date line. The difference between the result computed by
+    /// this method and the result computed by `avgLatLong()` grows as (1) the path distance grows and (2) the path
+    /// locations move further and further away from the equator.
+    ///
+    /// This method is FASTER and LESS ACCURATE because it utilizes simple arithmetic instead of accurate trigonometric
+    /// functions.
+    ///
+    /// @param locations An array of locations
+    ///
+    /// @return The average location
+    /// @throws NoSuchElementException When locations is empty
     public static LatLong128 quickAvgLatLong(LatLong128... locations) {
         requireNonNull(locations);
 
@@ -413,30 +375,26 @@ public class LatLong128 implements HasLatLong, Comparable<LatLong128> {
         return LatLong128.of(avgLatitude, curAvgLongitude);
     }
 
-    /**
-     * QUICKLY compute the ARITHMETIC average of these LatLong positions. This computation does not reflect curvature of
-     * the earth, but it does correct for the international date line. The difference between the result computed by
-     * this method and the result computed by {@code avgLatLong()} grows as (1) the path distance grows and (2) the path
-     * locations move further and further away from the equator.
-     * <p>
-     * This method is FASTER and LESS ACCURATE because it utilizes simple arithmetic instead of accurate trigonometric
-     * functions.
-     *
-     * @param locations A collection of LatLong locations
-     *
-     * @return The average location
-     * @throws NoSuchElementException When locations is empty
-     */
+    /// QUICKLY compute the ARITHMETIC average of these LatLong positions. This computation does not reflect curvature of
+    /// the earth, but it does correct for the international date line. The difference between the result computed by
+    /// this method and the result computed by `avgLatLong()` grows as (1) the path distance grows and (2) the path
+    /// locations move further and further away from the equator.
+    ///
+    /// This method is FASTER and LESS ACCURATE because it utilizes simple arithmetic instead of accurate trigonometric
+    /// functions.
+    ///
+    /// @param locations A collection of LatLong locations
+    ///
+    /// @return The average location
+    /// @throws NoSuchElementException When locations is empty
     public static LatLong128 quickAvgLatLong(Collection<LatLong128> locations) {
         requireNonNull(locations);
         LatLong128[] asArray = locations.toArray(new LatLong128[0]);
         return quickAvgLatLong(asArray);
     }
 
-    /**
-     * Naively compute the weighted average of two longitude values. Be careful, This method ignores curvature of the
-     * earth.
-     */
+    /// Naively compute the weighted average of two longitude values. Be careful, This method ignores curvature of the
+    /// earth.
     private static double avgLong(double longitudeA, int weightA, double longitudeB, int weightB) {
 
         double w1 = (double) (weightA) / (double) (weightA + weightB);
@@ -457,11 +415,9 @@ public class LatLong128 implements HasLatLong, Comparable<LatLong128> {
                 .result();
     }
 
-    /**
-     * Models a LatLong location as a 3-dimensional unit vector. This conversion can be useful for eliminating some
-     * corner cases involved with certain LatLong operations (like find the average LatLong across the international
-     * date line).
-     */
+    /// Models a LatLong location as a 3-dimensional unit vector. This conversion can be useful for eliminating some
+    /// corner cases involved with certain LatLong operations (like find the average LatLong across the international
+    /// date line).
     private static class SphericalUnitVector {
 
         final double x;

@@ -13,13 +13,11 @@ import static io.github.jon1van.commons.units.Distance.Unit.*;
 import static io.github.jon1van.commons.units.Speed.Unit.*;
 
 
-/**
- * This Speed class is intended to make working with Speeds less error prone because (1) all Speed
- * objects are immutable and (2) the unit is always required and always accounted for.
- * <p>
- * This class is extremely similar in spirit and design to java.time.Duration, java.time.Instant,
- * and the Distance class (in this package).
- */
+/// This Speed class is intended to make working with Speeds less error prone because (1) all Speed
+/// objects are immutable and (2) the unit is always required and always accounted for.
+///
+/// This class is extremely similar in spirit and design to java.time.Duration, java.time.Instant,
+/// and the Distance class (in this package).
 public class Speed implements Serializable, Comparable<Speed> {
 
     public static final Speed ZERO = Speed.of(0.0, KNOTS);
@@ -132,17 +130,15 @@ public class Speed implements Serializable, Comparable<Speed> {
         return new Speed(Distance.of(amount, unit.distUnit), unit.secondsPerTimeUnit * 1000.0);
     }
 
-    /**
-     * Compute the speed required to travel between these two position and times
-     *
-     * @param pos1  The first LatLong position
-     * @param time1 The Instant you are at the first position
-     * @param pos2  A second LatLong position
-     * @param time2 The Instant you are at the second position
-     *
-     * @return The Speed you would have to travel to go from the first position to the second
-     *     position given the time that elapsed between the two Instants.
-     */
+    /// Compute the speed required to travel between these two position and times
+    ///
+    /// @param pos1  The first LatLong position
+    /// @param time1 The Instant you are at the first position
+    /// @param pos2  A second LatLong position
+    /// @param time2 The Instant you are at the second position
+    ///
+    /// @return The Speed you would have to travel to go from the first position to the second
+    ///     position given the time that elapsed between the two Instants.
     public static Speed between(LatLong pos1, Instant time1, LatLong pos2, Instant time2) {
         Distance distance = pos1.distanceTo(pos2);
         Duration timeDelta = Duration.between(time1, time2).abs();
@@ -197,46 +193,40 @@ public class Speed implements Serializable, Comparable<Speed> {
         return this.amountPerSecond * unit.secondsPerTimeUnit * conversionFactor;
     }
 
-    /**
-     * @return A String that contains 3 digits after the decimal place that always uses the default
-     *     "Speed Unit" for this Speed's underlying distance. For example, a Speed of 12.01 Nautical
-     *     miles in 15 minutes becomes "48.040kn" and 32 feet in 30 seconds becomes "64.000fpm"
-     */
+    /// @return A String that contains 3 digits after the decimal place that always uses the default
+    ///     "Speed Unit" for this Speed's underlying distance. For example, a Speed of 12.01 Nautical
+    ///     miles in 15 minutes becomes "48.040kn" and 32 feet in 30 seconds becomes "64.000fpm"
     @Override
     public String toString() {
         return toString(3);
     }
 
-    /** @return A String that contains n digits after the decimal place (e.g. "42.0mph"). */
+    /// @return A String that contains n digits after the decimal place (e.g. "42.0mph").
     public String toString(int digitsAfterDecimalPlace) {
         return toString(digitsAfterDecimalPlace, speedUnitFor(this.distanceUnit));
     }
 
-    /**
-     * Force to "toString" output to be expressed in a particular Speed unit. This method can help
-     * ensure that all "text output" uses a consistent formatting schema.
-     *
-     * @param digitsAfterDecimalPlace The number of digits after the decimal
-     * @param unit                    Express the Speed in this unit (e.g. KNOTS, METERS_PER_SECOND,
-     *                                etc.)
-     *
-     * @return A String that contains n digits after the decimal place (e.g. "42.00mps")
-     */
+    /// Force to "toString" output to be expressed in a particular Speed unit. This method can help
+    /// ensure that all "text output" uses a consistent formatting schema.
+    ///
+    /// @param digitsAfterDecimalPlace The number of digits after the decimal
+    /// @param unit                    Express the Speed in this unit (e.g. KNOTS, METERS_PER_SECOND,
+    ///                                etc.)
+    ///
+    /// @return A String that contains n digits after the decimal place (e.g. "42.00mps")
     public String toString(int digitsAfterDecimalPlace, Unit unit) {
         return String.format("%." + digitsAfterDecimalPlace + "f" + unit.abbreviation, in(unit));
     }
 
-    /**
-     * The "best" unit to write a Speed usually depends on how the internal "distance" value is
-     * defined. For example, if a Speed is defined using a distance denominated in "Nautical miles"
-     * then we'd typically want to report that speed in KNOTS and not, say, Feet per minute. This
-     * method picks the mostly likely Speed Unit given the distance unit a speed is defined with.
-     *
-     * @param distanceUnit e.g. NAUTICAL_MILES, METERS, KILOMETERS, MILES, or FEET.
-     *
-     * @return A speed unit like KNOTS, METERS_PER_SECOND, KILOMETERS_PER_HOUR, MILES_PER_HOUR, or
-     *     FEET_PER_MINUTE.
-     */
+    /// The "best" unit to write a Speed usually depends on how the internal "distance" value is
+    /// defined. For example, if a Speed is defined using a distance denominated in "Nautical miles"
+    /// then we'd typically want to report that speed in KNOTS and not, say, Feet per minute. This
+    /// method picks the mostly likely Speed Unit given the distance unit a speed is defined with.
+    ///
+    /// @param distanceUnit e.g. NAUTICAL_MILES, METERS, KILOMETERS, MILES, or FEET.
+    ///
+    /// @return A speed unit like KNOTS, METERS_PER_SECOND, KILOMETERS_PER_HOUR, MILES_PER_HOUR, or
+    ///     FEET_PER_MINUTE.
     public static Speed.Unit speedUnitFor(Distance.Unit distanceUnit) {
 
         return switch (distanceUnit) {
@@ -248,17 +238,15 @@ public class Speed implements Serializable, Comparable<Speed> {
         };
     }
 
-    /**
-     * Create a Speed object by parsing a String. This method works with both Speed.toString
-     * methods.
-     *
-     * @param parseMe A String like "5.0 kph", "5.0kph", or "-52kph".
-     *
-     * @return A correctly parsed Speed object
-     * @throws NullPointerException     On null input
-     * @throws IllegalArgumentException When a unit cannot be determined
-     * @throws NumberFormatException    When a quantity can't be extracted
-     */
+    /// Create a Speed object by parsing a String. This method works with both Speed.toString
+    /// methods.
+    ///
+    /// @param parseMe A String like "5.0 kph", "5.0kph", or "-52kph".
+    ///
+    /// @return A correctly parsed Speed object
+    /// @throws NullPointerException     On null input
+    /// @throws IllegalArgumentException When a unit cannot be determined
+    /// @throws NumberFormatException    When a quantity can't be extracted
     public static Speed fromString(String parseMe) {
         checkNotNull(parseMe);
 
@@ -277,14 +265,12 @@ public class Speed implements Serializable, Comparable<Speed> {
         return Speed.of(amount, speedUnit);
     }
 
-    /**
-     * Examine the end of a String and determine what units it contains by matching the end of the
-     * string with the abbreviation for a Speed.Unit.
-     *
-     * @param parseMe A String like "5.0 mph", "mph", "22mps", or "mps"
-     *
-     * @return The correct Speed.Unit or null if no match can be found.
-     */
+    /// Examine the end of a String and determine what units it contains by matching the end of the
+    /// string with the abbreviation for a Speed.Unit.
+    ///
+    /// @param parseMe A String like "5.0 mph", "mph", "22mps", or "mps"
+    ///
+    /// @return The correct Speed.Unit or null if no match can be found.
     public static Speed.Unit unitFromString(String parseMe) {
         // given a String like: "23 fpm" or "23"
 
@@ -296,11 +282,9 @@ public class Speed implements Serializable, Comparable<Speed> {
         return null;
     }
 
-    /**
-     * @param amountOfTime An amount of time
-     *
-     * @return The distance traveled in this amountOfTime at this Speed
-     */
+    /// @param amountOfTime An amount of time
+    ///
+    /// @return The distance traveled in this amountOfTime at this Speed
     public Distance times(Duration amountOfTime) {
         checkArgument(!amountOfTime.isNegative());
 
@@ -327,16 +311,14 @@ public class Speed implements Serializable, Comparable<Speed> {
         return this.plus(otherSpeed.times(-1.0));
     }
 
-    /** @return The absolute value of this speed. */
+    /// @return The absolute value of this speed.
     public Speed abs() {
         return (this.isNegative()) ? this.times(-1.0) : this;
     }
 
-    /**
-     * @param dist A distance
-     *
-     * @return The time required to travel this distance at this Speed.
-     */
+    /// @param dist A distance
+    ///
+    /// @return The time required to travel this distance at this Speed.
     public Duration timeToTravel(Distance dist) {
         checkNotNull(dist);
 

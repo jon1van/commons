@@ -44,21 +44,19 @@ public class Spherical {
         return EARTH_RADIUS_NM * PI / 2;
     }
 
-    /** @return The number of feet per nautical mile (6076.1154855643044619422572178478). */
+    /// @return The number of feet per nautical mile (6076.1154855643044619422572178478).
     public static Double feetPerNM() {
         return METERS_PER_NM / METERS_PER_FOOT;
     }
 
-    /**
-     * Compute the great circle spherical distance between two locations.
-     *
-     * @param latDeg1 latitude in degrees (of point 1)
-     * @param lonDeg1 longitude in degrees (of point 1)
-     * @param latDeg2 latitude in degrees (of point 2)
-     * @param lonDeg2 longitude in degrees (of point 2)
-     *
-     * @return The spherical distance between two locations
-     */
+    /// Compute the great circle spherical distance between two locations.
+    ///
+    /// @param latDeg1 latitude in degrees (of point 1)
+    /// @param lonDeg1 longitude in degrees (of point 1)
+    /// @param latDeg2 latitude in degrees (of point 2)
+    /// @param lonDeg2 longitude in degrees (of point 2)
+    ///
+    /// @return The spherical distance between two locations
     public static Double distanceInNM(Double latDeg1, Double lonDeg1, Double latDeg2, Double lonDeg2) {
         double lat1 = toRadians(latDeg1);
         double lon1 = toRadians(lonDeg1);
@@ -67,23 +65,21 @@ public class Spherical {
         return EARTH_RADIUS_NM * ahaversine(haversine(lat2 - lat1) + cos(lat1) * cos(lat2) * haversine(lon2 - lon1));
     }
 
-    /** Compute the great circle Distance between two object with a location. */
+    /// Compute the great circle Distance between two object with a location.
     public static Distance distanceBtw(HasLatLong one, HasLatLong two) {
         return Distance.ofNauticalMiles(distanceInNM(
                 one.latitude(), one.longitude(),
                 two.latitude(), two.longitude()));
     }
 
-    /**
-     * Compute the course between two locations.
-     *
-     * @param startLat  latitude in degrees of starting location
-     * @param startLong longitude in degrees of starting location
-     * @param endLat    latitude in degrees of starting location
-     * @param endLong   longitude in degrees of starting location
-     *
-     * @return The course between two points
-     */
+    /// Compute the course between two locations.
+    ///
+    /// @param startLat  latitude in degrees of starting location
+    /// @param startLong longitude in degrees of starting location
+    /// @param endLat    latitude in degrees of starting location
+    /// @param endLong   longitude in degrees of starting location
+    ///
+    /// @return The course between two points
     public static Double courseInDegrees(Double startLat, Double startLong, Double endLat, Double endLong) {
         double lat1 = toRadians(startLat);
         double lon1 = toRadians(startLong);
@@ -154,48 +150,42 @@ public class Spherical {
         return LatLong128.of(latProj, lonProj);
     }
 
-    /**
-     * Compute a new LatLong location from an starting location, a direction, and a distance.
-     *
-     * @param start     The starting location
-     * @param direction The direction of travel
-     * @param distance  The distance traveled
-     *
-     * @return The destination location
-     */
+    /// Compute a new LatLong location from an starting location, a direction, and a distance.
+    ///
+    /// @param start     The starting location
+    /// @param direction The direction of travel
+    /// @param distance  The distance traveled
+    ///
+    /// @return The destination location
     public static LatLong128 projectOut(HasLatLong start, Course direction, Distance distance) {
         return Spherical.projectOut(
                 start.latitude(), start.longitude(), direction.inDegrees(), distance.inNauticalMiles());
     }
 
-    /**
-     * Compute a new LatLong location from an starting location, a direction, a distance, and a
-     * curvature.
-     *
-     * @param start     The starting location
-     * @param direction The direction of travel
-     * @param distance  The distance traveled
-     * @param curvature The curvature of the travel path
-     *
-     * @return The destination location
-     */
+    /// Compute a new LatLong location from an starting location, a direction, a distance, and a
+    /// curvature.
+    ///
+    /// @param start     The starting location
+    /// @param direction The direction of travel
+    /// @param distance  The distance traveled
+    /// @param curvature The curvature of the travel path
+    ///
+    /// @return The destination location
     public static LatLong128 projectOut(HasLatLong start, Course direction, Distance distance, double curvature) {
         return projectOut(
                 start.latitude(), start.longitude(), direction.inDegrees(), distance.inNauticalMiles(), curvature);
     }
 
-    /**
-     * Compute a new LatLong location from an starting location, a direction, a distance, and a
-     * curvature.
-     *
-     * @param latDeg        latitude in degrees
-     * @param lonDeg        longitude in degrees
-     * @param headingDegree The heading in degrees
-     * @param distNM        The distance in nautical miles
-     * @param curvature     The curvature of the travel path
-     *
-     * @return The destination point
-     */
+    /// Compute a new LatLong location from an starting location, a direction, a distance, and a
+    /// curvature.
+    ///
+    /// @param latDeg        latitude in degrees
+    /// @param lonDeg        longitude in degrees
+    /// @param headingDegree The heading in degrees
+    /// @param distNM        The distance in nautical miles
+    /// @param curvature     The curvature of the travel path
+    ///
+    /// @return The destination point
     public static LatLong128 projectOut(
             Double latDeg, Double lonDeg, double headingDegree, double distNM, double curvature) {
         double rMax = EARTH_RADIUS_NM * Math.PI / 2.0;
@@ -211,17 +201,15 @@ public class Spherical {
         return Spherical.projectOut(latCen, lonCen, crsCen, Math.abs(radiusNM));
     }
 
-    /**
-     * Compute the ‘center' of the great circle to the right of the course for that lat/long. For
-     * example, a lat/long coordinate on the equator with a course heading due west will return the
-     * north pole
-     *
-     * @param latitude  The latitude of a Point
-     * @param longitude The longitude of a Point
-     * @param course    The direction of travel (in degrees)
-     *
-     * @return The ‘center' of the great circle to the right of the course for that lat/long.
-     */
+    /// Compute the ‘center' of the great circle to the right of the course for that lat/long. For
+    /// example, a lat/long coordinate on the equator with a course heading due west will return the
+    /// north pole
+    ///
+    /// @param latitude  The latitude of a Point
+    /// @param longitude The longitude of a Point
+    /// @param course    The direction of travel (in degrees)
+    ///
+    /// @return The ‘center' of the great circle to the right of the course for that lat/long.
     public static LatLong128 greatCircleOrigin(Double latitude, Double longitude, Double course) {
         return Spherical.projectOut(
                 latitude, longitude, Spherical.mod(course + 90.0, 360.0), oneQuarterCircumferenceOfEarthInNM());
@@ -235,14 +223,12 @@ public class Spherical {
         return 1.0 / Math.copySign(atan((1 - cos(d)) / (sin(d) * sin(phi))) * EARTH_RADIUS_NM, dTheta);
     }
 
-    /**
-     * Compute the length of an arc on the Earth's surface.
-     *
-     * @param radius  The radius (distance along the Earth's surface) of the arc
-     * @param degrees The central angle of the arc
-     *
-     * @return The length of the arc in nautical miles
-     */
+    /// Compute the length of an arc on the Earth's surface.
+    ///
+    /// @param radius  The radius (distance along the Earth's surface) of the arc
+    /// @param degrees The central angle of the arc
+    ///
+    /// @return The length of the arc in nautical miles
     public static Double arcLength(Double radius, Double degrees) {
         return toRadians(degrees) * EARTH_RADIUS_NM * sin(radius / EARTH_RADIUS_NM);
     }
@@ -293,24 +279,20 @@ public class Spherical {
         }
     }
 
-    /**
-     * Convert a distance, in nautical miles, to the corresponding amount of "great circle radians"
-     *
-     * @param nauticalMiles An amount of nautical miles
-     *
-     * @return An amount of "great circle radians"
-     */
+    /// Convert a distance, in nautical miles, to the corresponding amount of "great circle radians"
+    ///
+    /// @param nauticalMiles An amount of nautical miles
+    ///
+    /// @return An amount of "great circle radians"
     public static double distanceInRadians(double nauticalMiles) {
         return (PI / (180 * 60)) * nauticalMiles;
     }
 
-    /**
-     * Convert an amount of "great circle radians" to the corresponding amount of nautical miles.
-     *
-     * @param radians An amount of "great circle radians"
-     *
-     * @return An amount of nautical miles
-     */
+    /// Convert an amount of "great circle radians" to the corresponding amount of nautical miles.
+    ///
+    /// @param radians An amount of "great circle radians"
+    ///
+    /// @return An amount of nautical miles
     public static double distanceInNM(double radians) {
         return ((180 * 60) / PI) * radians;
     }
