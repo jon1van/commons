@@ -194,32 +194,6 @@ public class LatLong128 implements HasLatLong, Comparable<LatLong128> {
         return LatLong.fromLatLong(this);
     }
 
-    public Distance distanceTo(LatLong128 that) {
-        return Distance.ofNauticalMiles(distanceInNM(that));
-    }
-
-    public double distanceInNM(LatLong128 that) {
-        return Spherical.distanceInNM(this, that);
-    }
-
-    public double courseInDegrees(LatLong128 that) {
-        return Spherical.courseInDegrees(latitude, longitude, that.latitude(), that.longitude());
-    }
-
-    public Course courseTo(LatLong128 that) {
-        return Spherical.courseBtw(this, that);
-    }
-
-    /**
-     * @param distance The maximum qualifying distance (inclusive)
-     * @param location The "other"
-     *
-     * @return True if this LatLong is within the specified Distance to the provided location.
-     */
-    public boolean isWithin(Distance distance, LatLong128 location) {
-        return this.distanceTo(location).isLessThanOrEqualTo(distance);
-    }
-
     /**
      * Find a new LatLong by projecting out from this location in a specific direction and distance.
      *

@@ -205,7 +205,7 @@ public class LatLong128Test {
         double EXPECTED_DIST_IN_KM = 157.2;
         double KM_PER_NM = 1.852;
         double expectedDistance = EXPECTED_DIST_IN_KM / KM_PER_NM;
-        double actualDistance = one.distanceInNM(two);
+        double actualDistance = one.distanceInNmTo(two);
 
         double TOLERANCE = 0.1;
 

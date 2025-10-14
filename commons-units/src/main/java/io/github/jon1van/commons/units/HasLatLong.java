@@ -33,25 +33,43 @@ public interface HasLatLong {
     }
 
 
+
+    default Distance distanceTo(HasLatLong that) {
+        return Spherical.distanceBtw(this, that);
+    }
+
     /// @param other An object with a known LatLong
     ///
     /// @return The distance in Nautical Miles the provided object
     default double distanceInNmTo(HasLatLong other) {
-        checkNotNull(other, "Cannot compute the distance to a null HasPosition object");
-        return latLong().distanceInNM(other.latLong());
+        return distanceTo(other).inNauticalMiles();
     }
 
     /// @return The course (i.e. direction of travel) from this object to the other object.
     default double courseInDegrees(HasLatLong that) {
         return Spherical.courseInDegrees(
-                this.latitude(), this.longitude(),
-                that.latitude(), that.longitude());
+                latitude(), longitude(),
+                that.latitude(), that.longitude()
+        );
     }
 
     /// @return The Course (i.e. direction of travel) from this object to the other object.
     default Course courseTo(HasLatLong that) {
         return Course.ofDegrees(courseInDegrees(that));
     }
+
+
+
+    /// @param distance The maximum qualifying distance (inclusive)
+    /// @param location The "other"
+    ///
+    /// @return True if this object's LatLong is within the specified Distance to the provided location.
+    default boolean isWithin(Distance distance, LatLong128 location) {
+        return this.distanceTo(location).isLessThanOrEqualTo(distance);
+    }
+
+
+
 
     /// @return The location you'd arrive if you travel from this location the direction and distance given
     default LatLong128 projectOut(Double course, Double distance) {

@@ -150,23 +150,6 @@ public class LatLong implements HasLatLong, Comparable<LatLong> {
     }
 
 
-    public Distance distanceTo(LatLong that) {
-        return Distance.ofNauticalMiles(distanceInNM(that));
-    }
-
-    public double distanceInNM(LatLong that) {
-        return Spherical.distanceInNM(this.inflate(), that.inflate());
-    }
-
-    public double courseInDegrees(LatLong that) {
-        return Spherical.courseInDegrees(latitude(), longitude(), that.latitude(), that.longitude());
-    }
-
-    public Course courseTo(LatLong that) {
-        return Spherical.courseBtw(this.inflate(), that.inflate());
-    }
-
-
     public double latitude() {
         return decodeInt(latitudeAsInt);
     }
