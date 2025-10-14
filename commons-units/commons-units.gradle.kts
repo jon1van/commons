@@ -12,10 +12,8 @@ dependencies {
     testImplementation("org.junit.platform:junit-platform-launcher:1.8.2")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.10.0")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.0")
-//    testImplementation("org.hamcrest:hamcrest-all:1.3")
 
     testImplementation("org.apache.avro:avro:1.11.0")
-//    testImplementation("nl.jqno.equalsverifier:equalsverifier:3.15.2")
 }
 
 

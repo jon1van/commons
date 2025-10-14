@@ -65,25 +65,25 @@ public interface HasLatLong {
     static Double maxLatitude(Collection<? extends HasLatLong> locations) {
         checkInput(locations);
 
-        return locations.stream().map(hasPosition -> hasPosition.latitude()).reduce(-Double.MAX_VALUE, Math::max);
+        return locations.stream().map(HasLatLong::latitude).reduce(-Double.MAX_VALUE, Math::max);
     }
 
     static Double minLatitude(Collection<? extends HasLatLong> locations) {
         checkInput(locations);
 
-        return locations.stream().map(hasPosition -> hasPosition.latitude()).reduce(Double.MAX_VALUE, Math::min);
+        return locations.stream().map(HasLatLong::latitude).reduce(Double.MAX_VALUE, Math::min);
     }
 
     static Double maxLongitude(Collection<? extends HasLatLong> locations) {
         checkInput(locations);
 
-        return locations.stream().map(hasPosition -> hasPosition.longitude()).reduce(-Double.MAX_VALUE, Math::max);
+        return locations.stream().map(HasLatLong::longitude).reduce(-Double.MAX_VALUE, Math::max);
     }
 
     static Double minLongitude(Collection<? extends HasLatLong> locations) {
         checkInput(locations);
 
-        return locations.stream().map(hasPosition -> hasPosition.longitude()).reduce(Double.MAX_VALUE, Math::min);
+        return locations.stream().map(HasLatLong::longitude).reduce(Double.MAX_VALUE, Math::min);
     }
 
     static void checkInput(Collection<? extends HasLatLong> locations) {

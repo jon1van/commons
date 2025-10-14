@@ -239,20 +239,13 @@ public class Speed implements Serializable, Comparable<Speed> {
      */
     public static Speed.Unit speedUnitFor(Distance.Unit distanceUnit) {
 
-        switch (distanceUnit) {
-            case NAUTICAL_MILES:
-                return KNOTS;
-            case FEET:
-                return FEET_PER_MINUTE;
-            case KILOMETERS:
-                return KILOMETERS_PER_HOUR;
-            case METERS:
-                return METERS_PER_SECOND;
-            case MILES:
-                return MILES_PER_HOUR;
-            default:
-                throw new IllegalArgumentException("unknown unit: " + distanceUnit);
-        }
+        return switch (distanceUnit) {
+            case NAUTICAL_MILES -> KNOTS;
+            case FEET -> FEET_PER_MINUTE;
+            case KILOMETERS -> KILOMETERS_PER_HOUR;
+            case METERS -> METERS_PER_SECOND;
+            case MILES -> MILES_PER_HOUR;
+        };
     }
 
     /**
@@ -319,22 +312,15 @@ public class Speed implements Serializable, Comparable<Speed> {
         return new Speed(distanceUnit, amountPerSecond * scalar);
     }
 
-    public Speed plus(Speed otherSpeed) {
+    public Speed plus(Speed other) {
 
-        switch (this.distanceUnit) {
-            case NAUTICAL_MILES:
-                return Speed.of(this.inKnots() + otherSpeed.inKnots(), KNOTS);
-            case METERS:
-                return Speed.of(this.inMetersPerSecond() + otherSpeed.inMetersPerSecond(), METERS_PER_SECOND);
-            case FEET:
-                return Speed.of(this.inFeetPerSecond() + otherSpeed.inFeetPerSecond(), FEET_PER_SECOND);
-            case MILES:
-                return Speed.of(this.inMilesPerHour() + otherSpeed.inMilesPerHour(), MILES_PER_HOUR);
-            case KILOMETERS:
-                return Speed.of(this.inKilometersPerHour() + otherSpeed.inKilometersPerHour(), KILOMETERS_PER_HOUR);
-            default:
-                throw new IllegalStateException("Unkown distanceUnit: " + this.distanceUnit);
-        }
+        return switch (this.distanceUnit) {
+            case NAUTICAL_MILES -> Speed.of(this.inKnots() + other.inKnots(), KNOTS);
+            case METERS -> Speed.of(this.inMetersPerSecond() + other.inMetersPerSecond(), METERS_PER_SECOND);
+            case FEET -> Speed.of(this.inFeetPerSecond() + other.inFeetPerSecond(), FEET_PER_SECOND);
+            case MILES -> Speed.of(this.inMilesPerHour() + other.inMilesPerHour(), MILES_PER_HOUR);
+            case KILOMETERS -> Speed.of(this.inKilometersPerHour() + other.inKilometersPerHour(), KILOMETERS_PER_HOUR);
+        };
     }
 
     public Speed minus(Speed otherSpeed) {
