@@ -1,8 +1,14 @@
+# Mac things
+*.DS_Store
+
+# Gradle things
 # Ignore Gradle project-specific cache directory
 .gradle
-
 # Ignore Gradle build output directory
 build
 
 # IntelliJ things
 .idea/
+
+# Project Specific things
+*/mapTileCache

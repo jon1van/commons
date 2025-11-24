@@ -7,9 +7,11 @@
 
 rootProject.name = "commons"
 
-include("commons-units")
 include("commons-utils")
+include("commons-units")
+include("commons-maps")
 include("commons-collect")
+include("commons-niche")
 
 
 // Check that every subproject has a custom build file, based on the project name.

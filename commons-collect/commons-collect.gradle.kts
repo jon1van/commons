@@ -1,10 +1,17 @@
 plugins {
     id("jacoco")
+    id("com.diffplug.spotless") version "8.0.0"
 }
 
 dependencies {
 
     testImplementation("nl.jqno.equalsverifier:equalsverifier:3.15.2")
+
+    testImplementation("org.assertj:assertj-core:3.26.0")
+
+    testImplementation("org.junit.platform:junit-platform-launcher:1.8.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.10.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.0")
 }
 
 
@@ -24,6 +31,22 @@ tasks {
 //        options.compilerArgs.add("-Xdoclint:all,-missing")
 //        options.compilerArgs.add("-Xlint:deprecation")
         options.compilerArgs.add("-Xlint:unchecked")
+    }
+}
+
+// Enforces a consistent code style with the "spotless" plugin
+//
+// See https://github.com/diffplug/spotless
+// And https://github.com/diffplug/spotless/tree/main/plugin-gradle
+spotless {
+    java {
+        // This formatter is "Good" but not "Perfect"
+        // But, using this formatter allows multiple contributors to work in a "common style"
+        palantirJavaFormat()
+
+        // import order: static, JDK, 3rd Party
+        importOrder("\\#", "java|javax", "")
+        removeUnusedImports()
     }
 }
 
@@ -48,7 +71,7 @@ publishing {
                 licenses {
                     license {
                         name.set("The Apache License, Version 2.0")
-                        url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
                     }
                 }
                 developers {

@@ -36,11 +36,13 @@ subprojects {
 
     dependencies {
 
-        implementation("com.google.guava:guava:32.1.2-jre")
+        implementation("com.google.guava:guava:33.5.0-jre")
+//        implementation("com.google.guava:guava:32.1.2-jre")
+
+
 //        implementation("com.google.code.gson:gson:2.8.9")
 //
 //        implementation("org.apache.commons:commons-math3:3.6.1")
-//        implementation("org.apache.avro:avro:1.11.4")
 //
 //        implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.2")
 //        implementation("com.fasterxml.jackson.core:jackson-core:2.18.2")
@@ -51,6 +53,5 @@ subprojects {
         testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.0")
 
         testImplementation("org.assertj:assertj-core:3.26.0")
-//        testImplementation("org.hamcrest:hamcrest-all:1.3")
     }
 }
