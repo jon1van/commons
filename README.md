@@ -7,7 +7,7 @@ This project contains multiple library components for use elsewhere.
 - **[Units](#units)**
 - **[Maps](#maps)**
 - **[Id](#id)**
-- **Collect**
+- **[Collect](#collect)**
 - **Utils**
 
 ## Units
@@ -83,4 +83,44 @@ These ID classes provide collision-proof "UUID-like" behavior while also encodin
 timestamp. [TimeId](./commons-id/src/main/java/io/github/jon1van/ids/TimeId.java) uses 128bits and is safe to use
 anywhere.  `TimeId` is similar to UUID v7 and Snowflake ID
 [SmallTimeId](./commons-id/src/main/java/io/github/jon1van/ids/SmallTimeId.java) uses half the size (64 bits) and
-requires meeting certain constraints.  Learn more [here](./docs/timeIdDesign.md)
+requires meeting certain constraints. Learn more [here](./docs/timeIdDesign.md)
+
+## Collect
+
+The `collect` package contains custom data
+structures: [MetricTree](./commons-collect/src/main/java/io/github/jon1van/collect/MetricTree.java)
+, [MetricSet](./commons-collect/src/main/java/io/github/jon1van/collect/MetricSet.java)
+, and  [HashedLinkedSequence](./commons-collect/src/main/java/io/github/jon1van/collect/HashedLinkedSequence.java)
+
+`MetricTree` and `MetricSet` provide efficient k-nearest neighbor search in multidimensional space. These
+data-structures are often configured with the classes from [Units](#units)
+
+```
+// Start with this data
+Map<LatLong, String> businessLocations = getBusinessData();
+var myLocation = LatLong.of(12.345,  67.890);
+
+// Organize this Key/Value data by "distance between keys"
+DistanceMetric<LatLong> metric = (a, b) -> a.distanceTo(b).inMeters();
+MetricTree<LatLong, String> tree = new MetricTree<>(metric);
+tree.putAll(businessLocations);
+
+// Simply find the 5 closest businesses to your location .. 
+List<SearchResult<LatLong, String>> results = tree.getNClosest(myLocation, 5);
+```
+
+The `HashedLinkedSequence` is a data structure that combines aspects of HashSet and LinkedList so that inserts and
+searches are all constant time operations.
+
+```
+String[] data = {"a", "b", "c", "d", "e", "f", "g", "h"};
+
+HashedLinkedSequence<String> hashedSequence = newHashedLinkedSequence(data);
+
+hashedSequence.insertBefore("x", "e");
+hashedSequence.insertAfter("y", "e");
+
+// e.g. {a, b, c, d, x, e, y, f, g, h}
+hashedSequence.getElementAfter("x");  // return "e"
+hashedSequence.getElementBefore("y");  // returns "e"
+```
