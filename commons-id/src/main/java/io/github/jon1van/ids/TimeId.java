@@ -1,8 +1,7 @@
 package io.github.jon1van.ids;
 
-import io.github.jon1van.units.HasTime;
-
 import static com.google.common.base.Preconditions.checkArgument;
+import static io.github.jon1van.ids.BitAndHashingUtils.makeBitMask;
 import static java.time.Instant.now;
 import static java.util.Objects.requireNonNull;
 
@@ -12,13 +11,15 @@ import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.Base64;
 
+import io.github.jon1van.units.HasTime;
+
 /// A TimeId is a 128-bit unique identifier that combines key features of java.util.UUID and
 /// java.time.Instant.
 ///
 /// The TimeId bits are: {{42 time bits}} + {{86 pseudo-random bits}}
 ///
-/// TimeId takes after Twitter's Snowflake ID (see https://en.wikipedia.org/wiki/Snowflake_ID)
-/// and UUID (see https://en.wikipedia.org/wiki/Universally_unique_identifier). TimeId is similar to
+/// TimeId takes after Twitter's [Snowflake ID](https://en.wikipedia.org/wiki/Snowflake_ID)
+/// and [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier). TimeId is similar to
 /// Snowflake_ID because both systems embed a timestamp that ensures the id's are mostly sorted by
 /// time. TimeId is similar to UUID because they both allocate enough bits to storing pseudo-random
 /// bits for the probability of a hash-collision to be vanishingly small.
@@ -287,15 +288,15 @@ public class TimeId implements Comparable<TimeId>, HasTime {
                         : (this.rightBits < val.rightBits ? -1 : (this.rightBits > val.rightBits ? 1 : 0))));
     }
 
-    /// @return A long with the rightmost n-bits set to 1 and all other bets set to 0.
-    static long makeBitMask(int n) {
-        checkArgument(0 < n && n <= 64);
-        long mask = 0L;
-        for (int i = 0; i < n; i++) {
-            mask = mask << 1;
-            mask = mask | 1;
-        }
-
-        return mask;
-    }
+    //    /// @return A long with the rightmost n-bits set to 1 and all other bets set to 0.
+    //    static long makeBitMask(int n) {
+    //        checkArgument(0 < n && n <= 64);
+    //        long mask = 0L;
+    //        for (int i = 0; i < n; i++) {
+    //            mask = mask << 1;
+    //            mask = mask | 1;
+    //        }
+    //
+    //        return mask;
+    //    }
 }

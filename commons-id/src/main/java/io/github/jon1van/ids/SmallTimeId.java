@@ -1,7 +1,5 @@
 package io.github.jon1van.ids;
 
-import io.github.jon1van.units.HasTime;
-
 import static com.google.common.base.Preconditions.checkArgument;
 import static io.github.jon1van.ids.BitAndHashingUtils.makeBitMask;
 import static io.github.jon1van.ids.BitAndHashingUtils.truncateBits;
@@ -10,9 +8,11 @@ import static java.util.Objects.requireNonNull;
 import java.math.BigInteger;
 import java.time.Instant;
 
+import io.github.jon1van.units.HasTime;
+
 /// A SmallTimeId is a 63-bit unique identifier that embeds a millisecond timestamp.
 ///
-/// SmallTimeId takes after Twitter's Snowflake ID (see https://en.wikipedia.org/wiki/Snowflake_ID)
+/// SmallTimeId takes after Twitter's Snowflake ID (see [wikipedia](https://en.wikipedia.org/wiki/Snowflake_ID))
 /// because both ID systems: (1) Generate 63-bits longs for uniquely identifying objects and (2)
 /// Embed a timeStamp within the id. These systems generate their 63-bits ids by combining 40-ish
 /// bits from a timestamp and 20-ish bits from elsewhere. Snowflake_ID uses 41 and 22 bits while
@@ -54,7 +54,7 @@ import java.time.Instant;
 /// KEEP IN MIND -- A stateful SmallTimeId Factory (like IdFactoryShard) can make MUCH better
 /// use of the available bitspace than any ID-ing strategy that relies on hashing or randomization. A
 /// stateful ID Factory can systematically increment the SmallTimeId bits and avoid the pitfalls of a
-/// birthday attack (see https://en.wikipedia.org/wiki/Birthday_attack). Therefore, it makes sense to
+/// birthday attack (see [wikipedia](https://en.wikipedia.org/wiki/Birthday_attack)). Therefore, it makes sense to
 /// avoid the regular constructor and use a "factory method" layer. The existence of this layer will
 /// simplify changing the ID generation strategy should future needs require it.
 ///

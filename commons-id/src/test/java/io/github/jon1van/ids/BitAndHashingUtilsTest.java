@@ -1,7 +1,7 @@
 package io.github.jon1van.ids;
 
 import static io.github.jon1van.ids.BitAndHashingUtils.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import org.junit.jupiter.api.Test;
 
@@ -56,9 +56,11 @@ class BitAndHashingUtilsTest {
         long oneBit = makeBitMask(1);
         long twoBits = makeBitMask(2);
         long threeBits = makeBitMask(3);
+        long fourBits = makeBitMask(4);
 
         assertThat(inBinary(oneBit)).isEqualTo("1");
         assertThat(inBinary(twoBits)).isEqualTo("11");
         assertThat(inBinary(threeBits)).isEqualTo("111");
+        assertThat(inBinary(fourBits)).isEqualTo("1111");
     }
 }

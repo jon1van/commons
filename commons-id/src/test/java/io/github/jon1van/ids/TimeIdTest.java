@@ -309,23 +309,4 @@ class TimeIdTest {
                 .map(entry -> entry.getValue())
                 .collect(Collectors.toList());
     }
-
-    // exists to make tests more readable...
-    private static String inBinary(long val) {
-        return Long.toBinaryString(val);
-    }
-
-    @Test
-    public void bitmasksAreCorrect() {
-
-        long oneBit = makeBitMask(1);
-        long twoBits = makeBitMask(2);
-        long threeBits = makeBitMask(3);
-        long fourBits = makeBitMask(4);
-
-        assertThat(inBinary(oneBit)).isEqualTo("1");
-        assertThat(inBinary(twoBits)).isEqualTo("11");
-        assertThat(inBinary(threeBits)).isEqualTo("111");
-        assertThat(inBinary(fourBits)).isEqualTo("1111");
-    }
 }

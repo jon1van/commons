@@ -4,9 +4,10 @@ This project contains multiple library components for use elsewhere.
 
 ## The Modules
 
-- **Collect**
-- **[Maps](#maps)**
 - **[Units](#units)**
+- **[Maps](#maps)**
+- **[Id](#id)**
+- **Collect**
 - **Utils**
 
 ## Units
@@ -48,9 +49,9 @@ Iterator<Instant> every2sec = window.iterator(Duration.ofSeconds(2L));
 
 The maps package allows drawing custom maps on top of MapBox Tiles. This package is tightly integrated with the units
 package. This package's main public entry points
-are: [MapBuilder](./commons-maps/src/main/java/io/github/jon1van/commons/maps/MapBuilder.java),
-[MapFeatures](./commons-maps/src/main/java/io/github/jon1van/commons/maps/MapFeautres.java), and
-[MapImage](./commons-maps/src/main/java/io/github/jon1van/commons/maps/MapImage.java). 
+are: [MapBuilder](./commons-maps/src/main/java/io/github/jon1van/maps/MapBuilder.java),
+[MapFeatures](./commons-maps/src/main/java/io/github/jon1van/maps/MapFeatures.java), and
+[MapImage](./commons-maps/src/main/java/io/github/jon1van/maps/MapImage.java).
 
 ```
 // Plot a map that shows all the LatLong points within 2 miles of the centerpoint
@@ -73,3 +74,13 @@ MapBuilder.newMapBuilder()
 
 Additional Map making documentation is [here](./docs/mapping.md)
 
+## ID
+
+The tiny `id` package is for importing [TimeId](./commons-id/src/main/java/io/github/jon1van/ids/TimeId.java)
+and [SmallTimeId](./commons-id/src/main/java/io/github/jon1van/ids/SmallTimeId.java)
+
+These ID classes provide collision-proof "UUID-like" behavior while also encoding an epoch millisecond
+timestamp. [TimeId](./commons-id/src/main/java/io/github/jon1van/ids/TimeId.java) uses 128bits and is safe to use
+anywhere.  `TimeId` is similar to UUID v7 and Snowflake ID
+[SmallTimeId](./commons-id/src/main/java/io/github/jon1van/ids/SmallTimeId.java) uses half the size (64 bits) and
+requires meeting certain constraints.  Learn more [here](./docs/timeIdDesign.md)
