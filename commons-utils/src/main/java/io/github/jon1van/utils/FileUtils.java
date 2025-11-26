@@ -3,7 +3,7 @@ package io.github.jon1van.utils;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.collect.Streams.stream;
-import static io.github.jon1van.utils.DemotedException.demote;
+import static io.github.jon1van.uncheck.DemotedException.demote;
 import static java.nio.file.Files.newInputStream;
 import static java.nio.file.Files.newOutputStream;
 import static java.util.stream.Collectors.toCollection;

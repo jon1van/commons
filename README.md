@@ -8,7 +8,7 @@ This project contains multiple library components for use elsewhere.
 - **[Maps](#maps)**
 - **[Id](#id)**
 - **[Collect](#collect)**
-- **Utils**
+- **[Utils](#utils)**
 
 ## Units
 
@@ -124,3 +124,80 @@ hashedSequence.insertAfter("y", "e");
 hashedSequence.getElementAfter("x");  // return "e"
 hashedSequence.getElementBefore("y");  // returns "e"
 ```
+
+## Utils
+
+The `utils` package contains two important sub packages and a handful of miscellaneous utility classes that didn't have
+a better home.
+
+The two important subpackages are `uncheck` and `math`.
+
+### Exception Handling and Streams
+
+The `uncheck` package contains classes that drastically reduce the need for useless `try/catch` bloat everywhere
+CheckedExceptions are thrown and
+rethrown. [DemotedException](./commons-utils/src/main/java/io/github/jon1van/uncheck/DemotedException.java) converts any
+CheckedException into a runtime exception. Using `DemotedException` inside your `catch` blocks means your methods don't
+need to add `throws` clauses to their signatures.
+
+```
+// before:  Throws a IOException that callers MUST handle 
+public void doWork(File f) throws IOException { ... }
+
+// after:  Throws a RuntimeException in place of the IOException.  The ioe is still accessible in an upstream catch clause
+public void doWork(File f) {
+    try { ...}
+    catch (IOException ex) {
+        throw DemotedException.demote(ex);
+    }
+}
+```
+
+The `uncheck` package also helps simplify using standard java Stream and FunctionalInterfaces (e.g. `Function` and
+`Predicate`)
+
+```
+// before:  This stream is hard to read and hard to write because of checked exceptions!
+List<String> subset = myDataSet.stream()
+    .map(str -> {
+        try {
+            return functionThatThrowsCheckedEx(str);
+        } catch (AnnoyingCheckedException ex) {
+            throw new RuntimeException(ex);
+        }})
+    .filter(str -> str.length() < 5)
+    .toList();
+
+// after:  This stream is easier to read and write due to `uncheck`
+List<String> subset = myDataSet.stream()
+    .map(Uncheck.func(str -> functionThatThrowsCheckedEx(str))
+    .filter(str -> str.length() < 5)
+    .toList();
+```
+
+### Curve Fitting Position Data
+
+Inside `math` you will
+find [PositionInterpolator](./commons-utils/src/main/java/io/github/jon1van/math/locationfit/PositionInterpolator.java)
+and its
+implementation [LocalPolyInterpolator](./commons-utils/src/main/java/io/github/jon1van/math/locationfit/LocalPolyInterpolator.java).
+This interpolator uses polynomial curve fitting to convert raw a sequence of
+time-stamped [Position](./commons-units/src/main/java/io/github/jon1van/units/Position.java) measurements to
+enriched [KineticPosition](./commons-units/src/main/java/io/github/jon1van/units/KineticPosition.java) records. The
+resulting `KineticPosition` records provide numerically sound estimates of Location, Speed, Direction, and Acceleration.
+
+### Miscellaneous Utilities
+
+Other utilities include:
+
+- [NeighborIterator](./commons-utils/src/main/java/io/github/jon1van/utils/NeighborIterator.java) for iterating pairs of
+  consecutive items in an iteration. For example, the list {1, 2, 3, 4, 5} would yield the iteration {1, 2}, {2, 3}, {3,
+  4}, {4, 5}.
+- [SingleUseTimer](./commons-utils/src/main/java/io/github/jon1van/utils/SingleUseTimer.java) for timing individual
+  `Runnable`s (Similar to Guava's StopWatch)
+- [FileLineIterator](./commons-utils/src/main/java/io/github/jon1van/utils/FileLineIterator.java) for iterating the
+  lines inside a text file. This utility is better that other similar tools because it handles `.gz` files.
+- [ConsumingCollections](./commons-utils/src/main/java/io/github/jon1van/func/ConsumingCollections.java) decorates
+  standard Java Collections with the `Consumer` interface. This is useful when testing infinite streaming applications
+  that emit data via a `Consumer`. The `func` package contains other utilities for streaming data processing.
+- [PropertyUtils](./commons-utils/src/main/java/io/github/jon1van/utils/PropertyUtils.java) for java.util.Properties

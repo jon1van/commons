@@ -1,4 +1,4 @@
-package io.github.jon1van.lambda;
+package io.github.jon1van.uncheck;
 
 /// A CheckedConsumer is similar to a [Consumer] EXCEPT it throws a checked exception.
 ///

@@ -1,4 +1,4 @@
-package io.github.jon1van.lambda;
+package io.github.jon1van.uncheck;
 
 /// [BinaryOperator] is to [BiFunction] as [CheckedBinaryOperator] is to
 /// [CheckedBiFunction]

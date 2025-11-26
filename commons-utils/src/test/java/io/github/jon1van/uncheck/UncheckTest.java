@@ -1,4 +1,4 @@
-package io.github.jon1van.lambda;
+package io.github.jon1van.uncheck;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import io.github.jon1van.utils.DemotedException;
 import org.junit.jupiter.api.Test;
 
 public class UncheckTest {

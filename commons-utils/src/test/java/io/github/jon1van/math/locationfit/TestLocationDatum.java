@@ -1,6 +1,6 @@
 package io.github.jon1van.math.locationfit;
 
-import static io.github.jon1van.utils.DemotedException.demote;
+import static io.github.jon1van.uncheck.DemotedException.demote;
 
 import java.io.File;
 import java.nio.file.Files;

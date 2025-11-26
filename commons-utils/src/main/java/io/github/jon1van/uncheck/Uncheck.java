@@ -1,6 +1,6 @@
-package io.github.jon1van.lambda;
+package io.github.jon1van.uncheck;
 
-import static io.github.jon1van.utils.DemotedException.demote;
+import static io.github.jon1van.uncheck.DemotedException.demote;
 
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
@@ -8,8 +8,6 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
-
-import io.github.jon1van.utils.DemotedException;
 
 /// These methods makes using Java Streams and Java functional interfaces more convenient.
 ///

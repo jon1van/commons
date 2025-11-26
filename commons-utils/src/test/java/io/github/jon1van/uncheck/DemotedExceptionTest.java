@@ -1,6 +1,6 @@
-package io.github.jon1van.utils;
+package io.github.jon1van.uncheck;
 
-import static io.github.jon1van.utils.DemotedException.demote;
+import static io.github.jon1van.uncheck.DemotedException.demote;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;

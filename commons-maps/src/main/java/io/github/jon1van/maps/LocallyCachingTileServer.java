@@ -1,6 +1,6 @@
 package io.github.jon1van.maps;
 
-import static io.github.jon1van.utils.DemotedException.demote;
+import static io.github.jon1van.uncheck.DemotedException.demote;
 import static java.util.Objects.requireNonNull;
 
 import java.awt.image.BufferedImage;

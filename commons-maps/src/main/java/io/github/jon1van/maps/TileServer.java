@@ -2,7 +2,7 @@ package io.github.jon1van.maps;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static io.github.jon1van.maps.TileAddress.cornerFinder;
-import static io.github.jon1van.utils.DemotedException.demote;
+import static io.github.jon1van.uncheck.DemotedException.demote;
 import static java.util.Objects.requireNonNull;
 
 import java.awt.Graphics2D;

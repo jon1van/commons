@@ -1,4 +1,4 @@
-package io.github.jon1van.utils;
+package io.github.jon1van.uncheck;
 
 import java.io.Serial;
 

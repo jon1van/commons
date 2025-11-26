@@ -1,4 +1,4 @@
-package io.github.jon1van.lambda;
+package io.github.jon1van.uncheck;
 
 /// A CheckedRunnable is similar to a [Runnable] EXCEPT it throws a checked exception.
 ///

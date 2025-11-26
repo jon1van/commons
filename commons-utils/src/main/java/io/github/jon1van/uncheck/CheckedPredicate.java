@@ -1,4 +1,4 @@
-package io.github.jon1van.lambda;
+package io.github.jon1van.uncheck;
 
 /// A CheckedPredicate is similar to a [Predicate] EXCEPT it throws a checked exception.
 ///

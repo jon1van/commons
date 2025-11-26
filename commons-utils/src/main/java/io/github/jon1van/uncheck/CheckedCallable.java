@@ -1,4 +1,4 @@
-package io.github.jon1van.lambda;
+package io.github.jon1van.uncheck;
 
 /// A CheckedCallable is similar to a [Callable] EXCEPT it throws a checked exception.
 ///

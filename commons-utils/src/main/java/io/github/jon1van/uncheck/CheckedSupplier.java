@@ -1,4 +1,4 @@
-package io.github.jon1van.lambda;
+package io.github.jon1van.uncheck;
 
 /// A CheckedSupplier is similar to a [Supplier] EXCEPT it throws a checked exception.
 ///
