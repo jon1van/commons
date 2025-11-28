@@ -195,6 +195,9 @@ Other utilities include:
   4}, {4, 5}.
 - [SingleUseTimer](./commons-utils/src/main/java/io/github/jon1van/utils/SingleUseTimer.java) for timing individual
   `Runnable`s (Similar to Guava's StopWatch)
+- [ErrorCatchingTask](./commons-utils/src/main/java/io/github/jon1van/utils/ErrorCatchingTask.java)
+  and [ExceptionHandler](./commons-utils/src/main/java/io/github/jon1van/utils/ExceptionHandler.java) make using
+  `Runnables` in `ExecutorServices` more robust.
 - [FileLineIterator](./commons-utils/src/main/java/io/github/jon1van/utils/FileLineIterator.java) for iterating the
   lines inside a text file. This utility is better that other similar tools because it handles `.gz` files.
 - [ConsumingCollections](./commons-utils/src/main/java/io/github/jon1van/func/ConsumingCollections.java) decorates
