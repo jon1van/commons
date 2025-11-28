@@ -2,33 +2,30 @@
 
 The package `io.github.jon1van.maps` contains utilities for map making.
 
-1. `MapBuilder` is the easiest way to make maps. This is a standard Builder that provides fluent map making.
-2. You can manually create a map using `MapImage`. This class gets multiple map tiles from a `TileServer` and stitches
-   them together into a single properly cropped image.
+1. Using `MapBuilder` is the easiest way to make maps. The features in this package are designed for this Builder.
+2. You can also create a maps using `MapImage` directly. This class combine map tiles from a `TileServer` into a single
+   properly cropped image.
 3. `MapFeatures` and `FeatureSetBuilder` provide fluent apis for creating objects to be drawn on a map.
-4. The `PixelLatLong` class is useful for trying to map between real world `LatLong` location data and the pixel
-   coordinates system map tiles use.
+4. The `PixelLatLong` class translates between "real world" `LatLong` locations and the pixel coordinates system used in
+   map tiles.
 
-### About TileServers
+### TileServers
 
-A `TileServer` is an abstraction around a service that can
-provide [map tiles](https://docs.microsoft.com/en-us/azure/azure-maps/zoom-levels-and-tile-grid?tabs=csharp). The
-Commons project has a few built in TileServer implementation:
+A `TileServer` is a service that
+provides [map tiles](https://docs.microsoft.com/en-us/azure/azure-maps/zoom-levels-and-tile-grid?tabs=csharp). 
 
-- `MapBoxAPI`: This `TileServer` can provide 7 different styles of maps including: Streets, Outdoors, Light, Dark,
-  Satellite, and Satellite_Streets.
-    1. **Important** - Using the MapBoxApi requires passing a valid Mapbox Access token into the JVM. This can be done
-       one of three ways:  Setting an environment variable, setting a Java System property, or placing a file
-       named `mapbox.token` in the user directory.
-    2. If you use the file-based approach then the `mapbox.token` file should look
-       like: `MAPBOX_ACCESS_TOKEN=this.IsNotAValidKey.EvenThoughILookLikeOne`
+This package has a few built in TileServer implementation:
+- **`MapBoxAPI`**: provides tiles loaded from [MapBox](https://www.mapbox.com/)
+- **`MonochromeTileServer`:** provides tiles with a single background color.
+- **`DebugTileServer`:** provides tiles with a "test pattern" to help debug map making issues.
 
+### MapBox API Token
 
-- `MonochromeTileServer`: This provides simple one color background tiles. In addition to simple Maps this tile server
-  can be useful during unit testing because the tiles it provides never change pixels.
-
-
-- `DebugTileServer`:  This provides tiles with a "background test pattern" to help debug map making issues.
+Using the MapBox API requires setting the `MAPBOX_ACCESS_TOKEN` variable. This can be three ways:
+1. Setting a environment variable `MAPBOX_ACCESS_TOKEN` to a valid mapbox api token, 
+2. setting a Java System property `MAPBOX_ACCESS_TOKEN` to a valid mapbox api token, 
+3. or placing a file named `mapbox.token` in the user directory. This file must have a single line 
+   - `MAPBOX_ACCESS_TOKEN=this.isNotAValidJwtToken.EvenThoughILookLikeOne`
 
 ### Making an Undecorated Map
 
