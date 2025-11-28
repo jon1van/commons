@@ -130,7 +130,7 @@ class LatLongPathTest {
 
         assertThat(path.size()).isEqualTo(0);
         assertThat(path.isEmpty()).isTrue();
-        assertThat(path.toArray()).isEqualTo(new LatLongPath[] {});
+        assertThat(path.toArray()).isEqualTo(new LatLong[] {});
         assertThat(path.toList().size()).isEqualTo(0);
 
         byte[] bytes = path.toBytes();
@@ -190,5 +190,18 @@ class LatLongPathTest {
             assertThat(path1_i.latitude()).isEqualTo(path2_i.latitude(), within(0.000_000_1));
             assertThat(path1_i.longitude()).isEqualTo(path2_i.longitude(), within(0.000_000_1));
         }
+    }
+
+    @Test
+    void pathDistanceIsCorrect() {
+
+        LatLong a = LatLong.of(0.0, 0.1);
+        LatLong b = LatLong.of(1.0, 1.1);
+        LatLong c = LatLong.of(2.0, 2.1);
+
+        LatLongPath fullPath = LatLongPath.from(a, b, c);
+        Distance sum = a.distanceTo(b).plus(b.distanceTo(c));
+
+        assertThat(fullPath.pathDistance()).isEqualTo(sum);
     }
 }

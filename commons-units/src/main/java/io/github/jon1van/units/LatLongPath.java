@@ -1,6 +1,7 @@
 package io.github.jon1van.units;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static java.util.Objects.nonNull;
 import static java.util.Objects.requireNonNull;
 
 import java.nio.ByteBuffer;
@@ -94,8 +95,7 @@ public class LatLongPath implements Iterable<LatLong> {
     /// Create a new LatLongPath object.
     ///
     /// @param base64Encoding The Base64 safe and URL safe (no padding) encoding of a LatLongPath's
-    ///                       byte[]
-    ///
+    ///                                                                                         byte[]
     /// @return A new LatLongPath object.
     public static LatLongPath fromBase64Str(String base64Encoding) {
         return LatLongPath.fromBytes(Base64.getUrlDecoder().decode(base64Encoding));
@@ -106,7 +106,6 @@ public class LatLongPath implements Iterable<LatLong> {
     ///
     /// @param beginIndex the beginning index, inclusive.
     /// @param endIndex   the ending index, exclusive.
-    ///
     /// @return The specified LatLongPath.
     public LatLongPath subpath(int beginIndex, int endIndex) {
         checkArgument(beginIndex >= 0, "beginIndex cannot be negative");
@@ -190,6 +189,29 @@ public class LatLongPath implements Iterable<LatLong> {
         return Arrays.hashCode(locationData);
     }
 
+    /// @return The total Distance obtained by walking from get(0) to get(1) to get(2) ... etc.
+    public Distance pathDistance() {
+        if (size() <= 1) {
+            return Distance.ZERO;
+        }
+        Distance sum = Distance.ZERO;
+        Iterator<LatLong> iter = iterator();
+        LatLong last;
+        LatLong cur = null;
+
+        while (iter.hasNext()) {
+            last = cur;
+            cur = iter.next();
+
+            if (nonNull(last)) {
+                Distance legDist = Distance.between(last, cur);
+                sum = sum.plus(legDist);
+            }
+        }
+
+        return sum;
+    }
+
     /// Compute the "total distance" between the points in these two paths.
     ///
     /// The distance computed here is the sum of the distances between "LatLong pairs" taken from the
@@ -205,7 +227,6 @@ public class LatLongPath implements Iterable<LatLong> {
     ///
     /// @param p1 A path
     /// @param p2 Another path
-    ///
     /// @return The sum of the pair-wise distance measurements
     public static double distanceBtw(LatLongPath p1, LatLongPath p2) {
         // ACCURATE BUT SLOW
@@ -242,7 +263,6 @@ public class LatLongPath implements Iterable<LatLong> {
     /// @param p1 A path
     /// @param p2 Another path
     /// @param n  The number of points considered in the "path distance" computation
-    ///
     /// @return The sum of the pair-wise distance measurements
     public static double distanceBtw(LatLongPath p1, LatLongPath p2, int n) {
         // ACCURATE BUT SLOW
