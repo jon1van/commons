@@ -96,7 +96,7 @@ public class Navigation {
     ///
     /// @return The course between two objects
     public static Course courseBtw(HasLatLong start, HasLatLong end) {
-        return Course.ofDegrees(courseInDegrees(start.latitude(), start.longitude(), end.latitude(), end.longitude()));
+        return courseBtw(start.latitude(), start.longitude(), end.latitude(), end.longitude());
     }
 
     /// Compute the course between two points.
@@ -108,7 +108,6 @@ public class Navigation {
     ///
     /// @return The course between two points as a Course object
     public static Course courseBtw(Double startLat, Double startLon, Double endLat, Double endLon) {
-        // call the other method, but return a Course object instead
         return Course.ofDegrees(courseInDegrees(startLat, startLon, endLat, endLon));
     }
 
