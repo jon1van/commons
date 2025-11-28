@@ -2,6 +2,7 @@ package io.github.jon1van.uncheck;
 
 import static io.github.jon1van.uncheck.DemotedException.demote;
 
+import java.util.concurrent.Callable;
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
@@ -166,12 +167,12 @@ public class Uncheck {
         }
     }
 
-    /// Wraps this "Callable" with a try/catch block that demotes all checked exceptions.
+    /// Wraps a Callable with a try/catch block that demotes all checked exceptions.
     ///
-    /// @param checkedCallable A Callable that can throw a checked exception
-    public static <T> T call(CheckedCallable<T> checkedCallable) {
+    /// @param callable A regular [Callable] that throws a checked exception
+    public static <T> T call(Callable<T> callable) {
         try {
-            return checkedCallable.call();
+            return callable.call();
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {
