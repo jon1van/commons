@@ -1,14 +1,34 @@
 # Commons
 
-This project contains multiple library components for use elsewhere.
+This project contains 5 mini-libraries for use elsewhere.
 
 ## The Modules
 
-- **[Units](#units)**
-- **[Maps](#maps)**
-- **[Id](#id)**
-- **[Collect](#collect)**
-- **[Utils](#utils)**
+- **[commons-units](#units)**
+- **[commons-map](#maps)**
+- **[commons-ids](#ids)**
+- **[commons-collect](#collect)**
+- **[commons-utils](#utils)**
+
+
+## Adopting!
+
+- These library are written in Java 25, so your project to be on Java 25 or later.
+- The latest official release is version: `0.0.59`
+- All official releases are available at [Maven Central](https://central.sonatype.com/artifact/io.github.jon1van/commons).
+
+
+#### Gradle
+
+```
+dependencies {
+  implementation("io.github.jon1van:commons-collect:a.b.c")
+  implementation("io.github.jon1van:commons-id:a.b.c")
+  implementation("io.github.jon1van:commons-maps:a.b.c")
+  implementation("io.github.jon1van:commons-utils:a.b.c")
+  implementation("io.github.jon1van:commons-units:a.b.c")
+}
+```
 
 ## Units
 
@@ -74,15 +94,15 @@ MapBuilder.newMapBuilder()
 
 Additional Map making documentation is [here](./docs/mapping.md)
 
-## ID
+## Ids
 
-The tiny `id` package is for importing [TimeId](./commons-id/src/main/java/io/github/jon1van/ids/TimeId.java)
-and [SmallTimeId](./commons-id/src/main/java/io/github/jon1van/ids/SmallTimeId.java)
+The tiny `ids` package is for importing [TimeId](./commons-ids/src/main/java/io/github/jon1van/ids/TimeId.java)
+and [SmallTimeId](./commons-ids/src/main/java/io/github/jon1van/ids/SmallTimeId.java)
 
 These ID classes provide collision-proof "UUID-like" behavior while also encoding an epoch millisecond
-timestamp. [TimeId](./commons-id/src/main/java/io/github/jon1van/ids/TimeId.java) uses 128bits and is safe to use
+timestamp. [TimeId](./commons-ids/src/main/java/io/github/jon1van/ids/TimeId.java) uses 128bits and is safe to use
 anywhere.  `TimeId` is similar to UUID v7 and Snowflake ID
-[SmallTimeId](./commons-id/src/main/java/io/github/jon1van/ids/SmallTimeId.java) uses half the size (64 bits) and
+[SmallTimeId](./commons-ids/src/main/java/io/github/jon1van/ids/SmallTimeId.java) uses half the size (64 bits) and
 requires meeting certain constraints. Learn more [here](./docs/timeIdDesign.md)
 
 ## Collect

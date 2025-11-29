@@ -54,7 +54,7 @@ spotless {
 publishing {
     publications {
         create<MavenPublication>("mavenJava") {
-            artifactId = "commons-id"
+            artifactId = "commons-ids"
             from(components["java"])
             versionMapping {
                 usage("java-api") {

@@ -33,8 +33,10 @@ public class ErrorCatchingTask implements Runnable {
     ///
     /// @param runMe            A Runnable that will be run
     /// @param exceptionHandler An ExceptionHandler that handles any exceptions thrown by runMe
-    /// @param errorHandler     A block of code that is called when Errors are encountered. It is generally bad-practice
-    ///                          to "catch" errors. Errors are serious issues that the JVM usually cannot recover from.
+    /// @param errorHandler     A block of code that is called when Errors are encountered. It is generally
+    // bad-practice
+    ///                          to "catch" errors. Errors are serious issues that the JVM usually cannot recover
+    // from.
     public ErrorCatchingTask(Runnable runMe, ExceptionHandler exceptionHandler, ErrorHandlingPolicy errorHandler) {
         this.runMe = checkNotNull(runMe, "The input Runnable cannot be null");
         this.exceptionHandler = checkNotNull(exceptionHandler, "The ErrorHandler cannot be null");
@@ -78,8 +80,7 @@ public class ErrorCatchingTask implements Runnable {
 
     /// @return An ErrorHandlingPolicy that does no extra work, the Error is merely rethrown.
     public static ErrorHandlingPolicy ignoreAndRethrow() {
-        return error -> {
-        };
+        return error -> {};
     }
 
     @FunctionalInterface

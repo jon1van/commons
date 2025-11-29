@@ -1,7 +1,7 @@
 rootProject.name = "commons"
 
 include("commons-utils")
-include("commons-id")
+include("commons-ids")
 include("commons-units")
 include("commons-maps")
 include("commons-collect")
