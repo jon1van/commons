@@ -24,7 +24,7 @@ class MapImageTest {
     @Disabled
     @Test
     public void drawSimpleMapWithNoFeatures() {
-        // Disabled because (1) downloaded map data takes a while, (2) tile server changes output...so we can't test
+        // Disabled because (1) downloaded map data takes a while, (2) tiles change output map...so we can't test
         // against image equality
 
         MapImage map = new MapImage(

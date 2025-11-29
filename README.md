@@ -1,6 +1,6 @@
 # Commons
 
-This project contains 5 mini-libraries for use elsewhere.
+This project contains 5 mini-libraries for use in Java projects.
 
 ## The Modules
 
@@ -13,8 +13,8 @@ This project contains 5 mini-libraries for use elsewhere.
 
 ## Adopting!
 
-- These library are written in Java 25, so your project to be on Java 25 or later.
-- The latest official release is version: `0.0.59`
+- These library are written in Java 25, so your project needs to be on Java 25 or later.
+- The latest official release is version: `x.y.z`
 - All official releases are available at [Maven Central](https://central.sonatype.com/artifact/io.github.jon1van/commons).
 
 
@@ -59,16 +59,16 @@ Course direction = nyc.courseTo(la);
 Instant[] times = getTimestamps();
 
 TimeWindow window = Time.enclosingTimeWindow(times);
-Instant startTime = window.start();
-Instant endTime = window.end();
+
 Duration timeSpan = window.length();
 Iterator<Instant> every2sec = window.iterator(Duration.ofSeconds(2L));
+Instant startTime = window.start();
+Instant endTime = window.end();
 ```
 
 ## Maps
 
-The maps package allows drawing custom maps on top of MapBox Tiles. This package is tightly integrated with the units
-package. This package's main public entry points
+The maps package allows drawing custom maps on top of MapBox Tiles. This package is tightly integrated with the unitspackage. This package's main public entry points
 are: [MapBuilder](./commons-maps/src/main/java/io/github/jon1van/maps/MapBuilder.java),
 [MapFeatures](./commons-maps/src/main/java/io/github/jon1van/maps/MapFeatures.java), and
 [MapImage](./commons-maps/src/main/java/io/github/jon1van/maps/MapImage.java).
@@ -224,3 +224,16 @@ Other utilities include:
   standard Java Collections with the `Consumer` interface. This is useful when testing infinite streaming applications
   that emit data via a `Consumer`. The `func` package contains other utilities for streaming data processing.
 - [PropertyUtils](./commons-utils/src/main/java/io/github/jon1van/utils/PropertyUtils.java) for java.util.Properties
+
+
+---
+
+## Release Notes
+
+[Here](./docs/release-notes.md) is a summary of changes and features included in each release.
+
+---
+
+## Open Source License
+
+This project is released under the [Apache License Version 2.0](LICENSE).
