@@ -11,8 +11,6 @@ import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.Base64;
 
-import io.github.jon1van.units.HasTime;
-
 /// A TimeId is a 128-bit unique identifier that combines key features of java.util.UUID and
 /// java.time.Instant.
 ///
@@ -43,7 +41,7 @@ import io.github.jon1van.units.HasTime;
 /// Support "backing out" the input timestamp, Solve the "ensure ID uniqueness" problem by having
 /// enough bits so that hash collision are not a practical concern, and finally Eliminate the need
 /// for "coordinating and configuring stateful ID Factories (see IdFactoryShard)"
-public class TimeId implements Comparable<TimeId>, HasTime {
+public class TimeId implements Comparable<TimeId> {
 
     /// The RNG that creates random bytes. In a holder class to defer initialization until needed.
     private static class Holder {
@@ -249,12 +247,10 @@ public class TimeId implements Comparable<TimeId>, HasTime {
         return new TimeId(left.longValue(), right.longValue());
     }
 
-    @Override
     public Instant time() {
         return Instant.ofEpochMilli(leftBits >> NUM_RAND_BITS_ON_LEFT);
     }
 
-    @Override
     public long timeAsEpochMs() {
         // override because it's wasteful to construct the Instant object we don't need.
         return leftBits >> NUM_RAND_BITS_ON_LEFT;

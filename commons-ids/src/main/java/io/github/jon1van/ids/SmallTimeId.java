@@ -8,8 +8,6 @@ import static java.util.Objects.requireNonNull;
 import java.math.BigInteger;
 import java.time.Instant;
 
-import io.github.jon1van.units.HasTime;
-
 /// A SmallTimeId is a 63-bit unique identifier that embeds a millisecond timestamp.
 ///
 /// SmallTimeId takes after Twitter's Snowflake ID (see [wikipedia](https://en.wikipedia.org/wiki/Snowflake_ID))
@@ -63,7 +61,7 @@ import io.github.jon1van.units.HasTime;
 /// dedicated "ID generation service", and easily parallelism but it COSTS having a chance for id
 /// collisions while drastically reducing the effectively useful bitspace (birthday attacks are
 /// legit)
-public class SmallTimeId implements HasTime, Comparable<SmallTimeId> {
+public class SmallTimeId implements Comparable<SmallTimeId> {
 
     /// Number of bits extracted from a timestamp's epochMills long.
     private static final int NUM_BITS_FOR_TIMESTAMP = 42;
@@ -101,7 +99,6 @@ public class SmallTimeId implements HasTime, Comparable<SmallTimeId> {
         return Instant.ofEpochMilli(idBits >> NUM_BITS_FOR_DISTINGUISHING_ITEMS);
     }
 
-    @Override
     public long timeAsEpochMs() {
         // override because it's wasteful to construct the Instant object we don't need.
         return idBits >> NUM_BITS_FOR_DISTINGUISHING_ITEMS;

@@ -5,9 +5,7 @@ plugins {
 
 dependencies {
 
-    api(project(":commons-units"))
     testImplementation("org.assertj:assertj-core:3.26.0")
-
 
     testImplementation("org.junit.platform:junit-platform-launcher:1.8.2")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.10.0")

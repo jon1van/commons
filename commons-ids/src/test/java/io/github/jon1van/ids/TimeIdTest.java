@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.google.common.math.StatsAccumulator;
-import io.github.jon1van.units.Time;
 import org.junit.jupiter.api.Test;
 
 class TimeIdTest {
@@ -123,21 +122,19 @@ class TimeIdTest {
     }
 
     @Test
-    public void orderingMatchesHasTime() {
+    public void orderFromOldestToNewest_matchesHasTime() {
 
         TimeId old = new TimeId(EPOCH.minusMillis(1L));
         TimeId lessOld = new TimeId(EPOCH.plusMillis(1L));
         TimeId another = newId();
 
         ArrayList<TimeId> byIdCompare = newArrayList(old, lessOld, another);
-        ArrayList<TimeId> byHasTime = newArrayList(another, old, lessOld);
-
+        Collections.shuffle(byIdCompare);
         Collections.sort(byIdCompare);
-        Collections.sort(byHasTime, Time.compareByTime());
 
-        assertThat(byIdCompare.get(0)).isEqualTo(byHasTime.get(0));
-        assertThat(byIdCompare.get(1)).isEqualTo(byHasTime.get(1));
-        assertThat(byIdCompare.get(2)).isEqualTo(byHasTime.get(2));
+        assertThat(byIdCompare.get(0)).isEqualTo(old);
+        assertThat(byIdCompare.get(1)).isEqualTo(lessOld);
+        assertThat(byIdCompare.get(2)).isEqualTo(another);
     }
 
     @Test
