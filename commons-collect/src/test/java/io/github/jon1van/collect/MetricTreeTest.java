@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,7 +28,7 @@ public class MetricTreeTest {
         SearchResult<Point, String> result = mTree.getClosest(searchKey);
         DistanceMetric<Point> metric = mTree.metric();
 
-        // confirm all Points in the tree are at least this far away..
+        // confirm all Points in the tree are at least this far away
         for (Map.Entry<Point, String> entry : mTree.entrySet()) {
             double dist = metric.distanceBtw(searchKey, entry.getKey());
             assertTrue(dist >= result.distance());
@@ -37,39 +36,21 @@ public class MetricTreeTest {
     }
 
     @Test
-    public void testNullKey_getClosest() {
+    public void noNullKeys() {
 
         MetricTree<Point, String> mTree = emptyMetricTree();
 
-        // null keys are not allowed
-        assertThrows(IllegalArgumentException.class, () -> mTree.getClosest(null));
+        assertThrows(NullPointerException.class, () -> mTree.getClosest(null));
+        assertThrows(NullPointerException.class, () -> mTree.getNClosest(null, 5));
+        assertThrows(NullPointerException.class, () -> mTree.getAllWithinRange(null, 5.0));
     }
 
     @Test
-    public void testNullKey_getNClosest() {
+    public void remove_noNullKeys() {
 
         MetricTree<Point, String> mTree = emptyMetricTree();
 
-        // null keys are not allowed
-        assertThrows(IllegalArgumentException.class, () -> mTree.getNClosest(null, 5));
-    }
-
-    @Test
-    public void testNullKey_remove() {
-
-        MetricTree<Point, String> mTree = emptyMetricTree();
-
-        // null keys are not allowed
-        assertThrows(IllegalArgumentException.class, () -> mTree.remove(null));
-    }
-
-    @Test
-    public void testNullKey_getAllWithinRange() {
-
-        MetricTree<Point, String> mTree = emptyMetricTree();
-
-        // null keys are not allowed
-        assertThrows(IllegalArgumentException.class, () -> mTree.getAllWithinRange(null, 5.0));
+        assertThrows(NullPointerException.class, () -> mTree.remove(null));
     }
 
     @Test
@@ -137,12 +118,12 @@ public class MetricTreeTest {
         MetricTree<Point, String> mTree = emptyMetricTree();
         Point searchKey = new Point(0, 0);
 
-        Collection<SearchResult<Point, String>> knnResults = mTree.getNClosest(searchKey, 4);
+        SearchResults<Point, String> knnResults = mTree.getNClosest(searchKey, 4);
 
         assertThat(knnResults).isNotNull();
         assertThat(knnResults.isEmpty()).isTrue();
 
-        Collection<SearchResult<Point, String>> rangeResults = mTree.getAllWithinRange(searchKey, 10.0);
+        SearchResults<Point, String> rangeResults = mTree.getAllWithinRange(searchKey, 10.0);
 
         assertThat(rangeResults).isNotNull();
         assertThat(rangeResults.isEmpty()).isTrue();
@@ -382,19 +363,19 @@ public class MetricTreeTest {
 
         assertThat(testTree.size()).isEqualTo(testData.size());
 
-        ArrayList<SearchResult<Point, String>> allResults = exhautivelySearch(testTree, testData, testKey);
+        ArrayList<SearchResult<Point, String>> allResults = exhaustivelySearch(testTree, testData, testKey);
 
         int N = 100;
-        List<SearchResult<Point, String>> kNNSearchResults = testTree.getNClosest(testKey, N);
+        SearchResults<Point, String> kNNSearchResults = testTree.getNClosest(testKey, N);
         assertEquals(N, kNNSearchResults.size());
         verifySearchResults(allResults, kNNSearchResults, 1000);
 
         double MAX_DIST = 50;
-        List<SearchResult<Point, String>> rangeSearchResults = testTree.getAllWithinRange(testKey, MAX_DIST);
+        SearchResults<Point, String> rangeSearchResults = testTree.getAllWithinRange(testKey, MAX_DIST);
         verifySearchResults(allResults, rangeSearchResults, MAX_DIST);
     }
 
-    private <V, K> ArrayList<SearchResult<K, V>> exhautivelySearch(
+    private <V, K> ArrayList<SearchResult<K, V>> exhaustivelySearch(
             MetricTree<K, V> testTree, Map<K, V> testData, K testKey) {
         ArrayList<SearchResult<K, V>> results = new ArrayList<>(testTree.size());
 
@@ -411,27 +392,27 @@ public class MetricTreeTest {
     }
 
     private <K, V> void verifySearchResults(
-            ArrayList<SearchResult<K, V>> allResults, List<SearchResult<K, V>> searchResults, double maxDist) {
+            ArrayList<SearchResult<K, V>> allResults, SearchResults<K, V> searchResults, double maxDist) {
 
         // confirm everything in "search results" is within "all results"
-        for (SearchResult<K, V> searchResult : searchResults) {
+        for (SearchResult<K, V> searchResult : searchResults.results()) {
             assertTrue(allResults.contains(searchResult));
         }
 
         // confirm everything in "search results" has a distance less than "maxDistance"
-        for (SearchResult<K, V> searchResult : searchResults) {
+        for (SearchResult<K, V> searchResult : searchResults.results()) {
             assertTrue(searchResult.distance() <= maxDist);
         }
 
         // compute the furthest item in the search results
         double maxSearchDist = 0;
-        for (SearchResult<K, V> result : searchResults) {
+        for (SearchResult<K, V> result : searchResults.results()) {
             maxSearchDist = Math.max(maxSearchDist, result.distance());
         }
 
         // find all the results that were excluded from "search results"
         ArrayList<SearchResult<K, V>> excluded = new ArrayList<>(allResults);
-        excluded.removeIf(result -> searchResults.contains(result));
+        excluded.removeIf(result -> searchResults.results().contains(result));
 
         // confirm everything in the "excluded results" is further away
         for (SearchResult<K, V> result : excluded) {
@@ -467,7 +448,7 @@ public class MetricTreeTest {
             }
         }
 
-        List<SearchResult<Key, Integer>> inRange = set.getAllWithinRange(new Key(1_000, 1_000), 20);
+        SearchResults<Key, Integer> inRange = set.getAllWithinRange(new Key(1_000, 1_000), 20);
 
         assertThat(inRange.size()).isEqualTo(n * n);
     }

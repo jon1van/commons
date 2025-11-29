@@ -3,7 +3,8 @@ package io.github.jon1van.collect;
 import static com.google.common.base.Preconditions.*;
 import static com.google.common.collect.Lists.newArrayList;
 import static io.github.jon1van.collect.CenterPointSelectors.maxOfRandomSamples;
-import static java.util.Objects.nonNull;
+import static java.util.Collections.emptyList;
+import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -173,13 +174,13 @@ public class MetricSet<K> {
 
         if (globalHashMap.containsKey(searchKey)) {
             Sphere sa = globalHashMap.get(searchKey);
-            return new SetSearchResult<>(searchKey, 0.0); // distance must be zero because we have an exact key match
+            var result =
+                    new SetSearchResult<>(searchKey, 0.0); // distance must be zero because we have an exact key match
+            //            return new SetSearchResults<>(searchKey, List.of(result));
         }
 
-        Collection<SetSearchResult<K>> results = getNClosest(searchKey, 1);
-
-        ArrayList<SetSearchResult<K>> list = new ArrayList<>(results);
-        return list.get(0);
+        return getNClosest(searchKey, 1).result(0);
+        //        return getNClosest(searchKey, 1);
     }
 
     /// Perform a kNN search with arbitrary k.
@@ -188,17 +189,12 @@ public class MetricSet<K> {
     /// @param n         The number of entries to search for
     ///
     /// @return A collection of n Key/Value Results with the smallest distances to the search key
-    public List<SetSearchResult<K>> getNClosest(K searchKey, int n) {
+    public SetSearchResults<K> getNClosest(K searchKey, int n) {
+        requireNonNull(searchKey);
+        checkArgument(n >= 1, "n must be at least 1");
 
-        checkArgument(nonNull(searchKey));
-
-        if (n < 1) {
-            throw new IllegalArgumentException("n must be at least 1");
-        }
-
-        // nothing to retrieve...
         if (this.isEmpty()) {
-            return Collections.emptyList();
+            return new SetSearchResults<>(searchKey, emptyList());
         }
 
         SetSearch<K> q = new SetSearch<>(searchKey, n, metric);
@@ -207,24 +203,19 @@ public class MetricSet<K> {
         ArrayList<SetSearchResult<K>> list = new ArrayList<>(q.results());
         Collections.sort(list);
 
-        return list;
+        return new SetSearchResults<>(searchKey, list);
     }
 
     /// @param searchKey The point-in-space from which the closest entries are found
     /// @param range     The distance below which all entries are included in the output.
     ///
     /// @return A Result for all keys within this range of the key.
-    public List<SetSearchResult<K>> getAllWithinRange(K searchKey, double range) {
+    public SetSearchResults<K> getAllWithinRange(K searchKey, double range) {
+        requireNonNull(searchKey);
+        checkArgument(range > 0, "range must be strictly positive");
 
-        checkArgument(nonNull(searchKey));
-
-        if (range <= 0) {
-            throw new IllegalArgumentException("The range must be strictly positive " + range);
-        }
-
-        // nothing to retrieve...
         if (this.isEmpty()) {
-            return Collections.emptyList();
+            return new SetSearchResults<>(searchKey, emptyList());
         }
 
         SetSearch<K> q = new SetSearch<>(searchKey, metric, range);
@@ -233,7 +224,7 @@ public class MetricSet<K> {
         ArrayList<SetSearchResult<K>> list = new ArrayList<>(q.results());
         Collections.sort(list);
 
-        return list;
+        return new SetSearchResults<>(searchKey, list);
     }
 
     /// Remove the value associated with a particular Key. IMPORTANT: A reference to a Key may remain
@@ -245,8 +236,7 @@ public class MetricSet<K> {
     ///
     /// @return The Value paired with the exact key (or null if no match is found).
     public boolean remove(K exactKey) {
-
-        checkArgument(nonNull(exactKey));
+        requireNonNull(exactKey);
 
         Sphere sa = globalHashMap.remove(exactKey);
 

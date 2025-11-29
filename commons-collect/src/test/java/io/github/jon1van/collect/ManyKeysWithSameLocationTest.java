@@ -90,7 +90,7 @@ public class ManyKeysWithSameLocationTest {
         for (Location location : copyOfTreeContent.keySet()) {
             List<Map.Entry<Location, String>> entriesInRange = findEntriesInRange(location, copyOfTreeContent, range);
 
-            List<SearchResult<Location, String>> treeResults = tree.getAllWithinRange(location, range);
+            SearchResults<Location, String> treeResults = tree.getAllWithinRange(location, range);
 
             // "Brute force search in the copy should find the same number as efficient search using the metric tree",
             assertThat(entriesInRange.size() == treeResults.size()).isTrue();
