@@ -12,44 +12,40 @@ This project contains 5 mini-libraries for use in Java projects.
 
 ## Units
 
-The units package simplify dealing with time-stamped location data. The core
+This package simplifies using time-stamped location data.
+
+The core
 classes [LatLong](./commons-units/src/main/java/io/github/jon1van/units/LatLong.java), [Distance](./commons-units/src/main/java/io/github/jon1van/units/Distance.java), [Speed](./commons-units/src/main/java/io/github/jon1van/units/Speed.java), [Course](./commons-units/src/main/java/io/github/jon1van/units/Course.java),
 [TimeWindow](./commons-units/src/main/java/io/github/jon1van/units/TimeWindow.java) and others provide a literate API
-for common tasks and elimination common mistakes (e.g., accounting for curvature of the earth, and making sure distance
-unit conversions are always correct).
+for common tasks while correctly handling annoying issues (e.g., accounting for curvature of the earth, and making sure
+distance unit conversions are always correct).
 
-The math backing the _spherical_ distance computations in this package is
-in [Navigation](./commons-units/src/main/java/io/github/jon1van/units/Navigation.java). Beware, computing distance on a
-spheroid is not straightforward.
-
-These units classes are used in the public API of the Maps package.
+[LatLong](./commons-units/src/main/java/io/github/jon1van/units/LatLong.java)
+and [Distance](./commons-units/src/main/java/io/github/jon1van/units/Distance.java) are used in the public API of
+the [Maps package](#maps).
 
 ### Code examples
 
 ```
-// Simple location, distance, speed, and direction tooling
+// Tooling for location, distance, speed, and direction
 LatLong nyc = LatLong.of(40.7859, -73.9624);
 LatLong la = LatLong.of(3.9427, -118.4100);
 Distance dist = nyc.distanceTo(la);
 Speed spd = dist.dividedBy(Duration.ofHours(4));
 Course direction = nyc.courseTo(la);
 
-
-// Time domain tooling
+// And tooling for the time domain
 Instant[] times = getTimestamps();
 
 TimeWindow window = Time.enclosingTimeWindow(times);
-
 Duration timeSpan = window.length();
-Iterator<Instant> every2sec = window.iterator(Duration.ofSeconds(2L));
 Instant startTime = window.start();
 Instant endTime = window.end();
 ```
 
 ## Maps
 
-The maps package allows drawing custom maps on top of MapBox Tiles. This package is tightly integrated with the units
-package. This package's main public entry points
+This package draws custom maps on top of MapBox Tiles. The public entry points
 are: [MapBuilder](./commons-maps/src/main/java/io/github/jon1van/maps/MapBuilder.java),
 [MapFeatures](./commons-maps/src/main/java/io/github/jon1van/maps/MapFeatures.java), and
 [MapImage](./commons-maps/src/main/java/io/github/jon1van/maps/MapImage.java).
@@ -77,14 +73,15 @@ Additional Map making documentation is [here](./docs/mapping.md)
 
 ## Ids
 
-The tiny `ids` package is for importing [TimeId](./commons-ids/src/main/java/io/github/jon1van/ids/TimeId.java)
-and [SmallTimeId](./commons-ids/src/main/java/io/github/jon1van/ids/SmallTimeId.java)
+This tiny package is for importing [TimeId](./commons-ids/src/main/java/io/github/jon1van/ids/TimeId.java)
+(and more rarely [SmallTimeId](./commons-ids/src/main/java/io/github/jon1van/ids/SmallTimeId.java))
+These IDs are collision-proof (like UUIDs) and ordered (to the millisecond resolution). They are extremely useful when
+your problem requires **absolutely no collisions** and _"approximate chronological ordering"_.
 
-These ID classes provide collision-proof "UUID-like" behavior while also encoding an epoch millisecond
-timestamp. [TimeId](./commons-ids/src/main/java/io/github/jon1van/ids/TimeId.java) uses 128bits and is safe to use
-anywhere.  `TimeId` is similar to UUID v7 and Snowflake ID
-[SmallTimeId](./commons-ids/src/main/java/io/github/jon1van/ids/SmallTimeId.java) uses half the size (64 bits) and
-requires meeting certain constraints. Learn more [here](./docs/timeIdDesign.md)
+[TimeId](./commons-ids/src/main/java/io/github/jon1van/ids/TimeId.java) uses 128bits and is safe to use anywhere.
+It is similar to UUID v7 and Snowflake
+ID. [SmallTimeId](./commons-ids/src/main/java/io/github/jon1van/ids/SmallTimeId.java) uses half the size (64 bits) but
+requires meeting certain constraints to use it safely. Learn more [here](./docs/timeIdDesign.md)
 
 ## Collect
 
@@ -128,12 +125,12 @@ hashedSequence.getElementBefore("y");  // returns "e"
 
 ## Utils
 
-The `utils` package contains two important sub packages and a handful of miscellaneous utility classes that didn't have
+This package contains two important sub packages and a handful of miscellaneous utility classes that didn't have
 a better home.
 
 The two important subpackages are `uncheck` and `math`.
 
-### Exception Handling and Streams
+### Uncheck: Exception Handling and Streams
 
 The `uncheck` package contains classes that drastically reduce the need for useless `try/catch` bloat everywhere
 CheckedExceptions are thrown and
@@ -176,7 +173,7 @@ List<String> subset = myDataSet.stream()
     .toList();
 ```
 
-### Curve Fitting Position Data
+### Math:  Curve Fitting Position Data
 
 Inside `math` you will
 find [PositionInterpolator](./commons-utils/src/main/java/io/github/jon1van/math/locationfit/PositionInterpolator.java)
