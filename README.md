@@ -1,4 +1,4 @@
-# Commons
+# jon1van's Commons
 
 This project contains 5 mini-libraries for use in Java projects.
 
@@ -10,26 +10,6 @@ This project contains 5 mini-libraries for use in Java projects.
 - **[commons-collect](#collect)**
 - **[commons-utils](#utils)**
 
-
-## Adopting!
-
-- These library are written in Java 25, so your project needs to be on Java 25 or later.
-- The latest official release is version: `x.y.z`
-- All official releases are available at [Maven Central](https://central.sonatype.com/artifact/io.github.jon1van/commons).
-
-
-#### Gradle
-
-```
-dependencies {
-  implementation("io.github.jon1van:commons-collect:a.b.c")
-  implementation("io.github.jon1van:commons-id:a.b.c")
-  implementation("io.github.jon1van:commons-maps:a.b.c")
-  implementation("io.github.jon1van:commons-utils:a.b.c")
-  implementation("io.github.jon1van:commons-units:a.b.c")
-}
-```
-
 ## Units
 
 The units package simplify dealing with time-stamped location data. The core
@@ -38,11 +18,11 @@ classes [LatLong](./commons-units/src/main/java/io/github/jon1van/units/LatLong.
 for common tasks and elimination common mistakes (e.g., accounting for curvature of the earth, and making sure distance
 unit conversions are always correct).
 
-The _spherical_ math backing class the distance computations in this package is
+The math backing the _spherical_ distance computations in this package is
 in [Navigation](./commons-units/src/main/java/io/github/jon1van/units/Navigation.java). Beware, computing distance on a
 spheroid is not straightforward.
 
-These units classes are key pieces of the public API of the Maps package
+These units classes are used in the public API of the Maps package.
 
 ### Code examples
 
@@ -68,7 +48,8 @@ Instant endTime = window.end();
 
 ## Maps
 
-The maps package allows drawing custom maps on top of MapBox Tiles. This package is tightly integrated with the unitspackage. This package's main public entry points
+The maps package allows drawing custom maps on top of MapBox Tiles. This package is tightly integrated with the units
+package. This package's main public entry points
 are: [MapBuilder](./commons-maps/src/main/java/io/github/jon1van/maps/MapBuilder.java),
 [MapFeatures](./commons-maps/src/main/java/io/github/jon1van/maps/MapFeatures.java), and
 [MapImage](./commons-maps/src/main/java/io/github/jon1van/maps/MapImage.java).
@@ -110,7 +91,7 @@ requires meeting certain constraints. Learn more [here](./docs/timeIdDesign.md)
 The `collect` package contains custom data
 structures: [MetricTree](./commons-collect/src/main/java/io/github/jon1van/collect/MetricTree.java)
 , [MetricSet](./commons-collect/src/main/java/io/github/jon1van/collect/MetricSet.java)
-, and  [HashedLinkedSequence](./commons-collect/src/main/java/io/github/jon1van/collect/HashedLinkedSequence.java)
+, and [HashedLinkedSequence](./commons-collect/src/main/java/io/github/jon1van/collect/HashedLinkedSequence.java)
 
 `MetricTree` and `MetricSet` provide efficient k-nearest neighbor search in multidimensional space. These
 data-structures are often configured with the classes from [Units](#units)
@@ -225,6 +206,26 @@ Other utilities include:
   that emit data via a `Consumer`. The `func` package contains other utilities for streaming data processing.
 - [PropertyUtils](./commons-utils/src/main/java/io/github/jon1van/utils/PropertyUtils.java) for java.util.Properties
 
+---
+
+## Adopting!
+
+- These library are written in Java 25, so your project needs to be on Java 25 or later.
+- The latest official release is version: `1.0.0`
+- All official releases are available
+  at [Maven Central](https://central.sonatype.com/artifact/io.github.jon1van/commons).
+
+#### Gradle
+
+```
+dependencies {
+  implementation("io.github.jon1van:commons-units:1.0.0")
+  implementation("io.github.jon1van:commons-collect:1.0.0")
+  implementation("io.github.jon1van:commons-maps:1.0.0")
+  implementation("io.github.jon1van:commons-id:1.0.0")
+  implementation("io.github.jon1van:commons-utils:1.0.0")
+}
+```
 
 ---
 

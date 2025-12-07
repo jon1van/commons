@@ -1,19 +1,30 @@
 plugins {
     `java-library`
-    `maven-publish`
+    id("com.vanniktech.maven.publish") version "0.35.0"
 }
 
-
-subprojects {
-    apply(plugin = "java-library")
-    apply(plugin = "maven-publish")
+// Set's the parent and ALL child modules' group & Version
+allprojects {
+    group = "io.github.jon1van"
+    version = "1.0.0"
 
     repositories {
         mavenCentral()
-        mavenLocal()
-        gradlePluginPortal()
     }
+}
 
+subprojects {
+    apply(plugin = "java-library")
+    apply(plugin = "com.vanniktech.maven.publish")
+
+    dependencies {
+        implementation("com.google.guava:guava:33.5.0-jre")
+
+        testImplementation("org.assertj:assertj-core:3.26.0")
+        testImplementation("org.junit.platform:junit-platform-launcher:1.8.2")
+        testImplementation("org.junit.jupiter:junit-jupiter-engine:5.10.0")
+        testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.0")
+    }
 
 //  This idiom completely mutes the "javadoc" task from java-library.
 //  Javadoc is still produced, but you won't get warnings OR build failures due to javadoc
@@ -30,28 +41,36 @@ subprojects {
         toolchain {
             languageVersion.set(JavaLanguageVersion.of(25))
         }
-        withSourcesJar()
-        withJavadocJar()
     }
 
-    dependencies {
+    mavenPublishing {
+        publishToMavenCentral(validateDeployment = true)
+        signAllPublications()
 
-        implementation("com.google.guava:guava:33.5.0-jre")
-//        implementation("com.google.guava:guava:32.1.2-jre")
-
-
-//        implementation("com.google.code.gson:gson:2.8.9")
-//
-//        implementation("org.apache.commons:commons-math3:3.6.1")
-//
-//        implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.18.2")
-//        implementation("com.fasterxml.jackson.core:jackson-core:2.18.2")
-//        implementation("com.fasterxml.jackson.core:jackson-databind:2.18.2")
-//        implementation("org.yaml:snakeyaml:2.4")
-//
-        testImplementation("org.junit.jupiter:junit-jupiter-engine:5.10.0")
-        testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.0")
-
-        testImplementation("org.assertj:assertj-core:3.26.0")
+        // Set the POM content that is shared btw all modules
+        pom {
+            name.set(project.name)
+            inceptionYear.set("2025")
+            url.set("https://github.com/jon1van/commons.git")
+            licenses {
+                license {
+                    name.set("The Apache License, Version 2.0")
+                    url.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                    distribution.set("http://www.apache.org/licenses/LICENSE-2.0.txt")
+                }
+            }
+            developers {
+                developer {
+                    id.set("jon1van")
+                    name.set("Jon Parker")
+                    url.set("https://github.com/jon1van")
+                }
+            }
+            scm {
+                url.set("https://github.com/jon1van/commons.git")
+                connection.set("scm:git:https://github.com/jon1van/commons.git")
+                developerConnection.set("scm:git:ssh://git@github.com/jon1van/commons.git")
+            }
+        }
     }
 }
