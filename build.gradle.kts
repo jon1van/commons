@@ -1,5 +1,6 @@
 plugins {
     `java-library`
+    // plugin docs are here: https://vanniktech.github.io/gradle-maven-publish-plugin/central/
     id("com.vanniktech.maven.publish") version "0.35.0"
 }
 

@@ -1,17 +1,25 @@
 name: publish
-
 on:
-  push:
+  workflow_dispatch:  # Manual trigger only
     branches: [ "main" ]
 
 jobs:
   unit:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.get_version.outputs.version }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           lfs: true
+
+      - name: Set up JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '25'
+
       - name: unit-test
         run: |
            chmod +x gradlew
@@ -27,55 +35,27 @@ jobs:
   release:
     needs: [ unit ]
     runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.version.outputs.nextStrict }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
           lfs: true
 
-#      - id: version
-#        uses: ietf-tools/semver-action@v1.9.0
-#        with:
-#          token: ${{ secrets.GITHUB_TOKEN }}
-#          branch: main
-#          majorList: feat!
-#          minorList: feat, feature
-#          patchList: fix, bugfix
-#          noVersionBumpBehavior: patch
-#          noNewCommitBehavior: silent
-
       - uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '25'
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
+      - name: Display version
+        run: echo "Publishing version ${{ needs.unit.outputs.version }}"
 
-#      - name: Create GitHub Release
-#        env:
-#          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        run: |
-#          gh release create "${{ steps.version.outputs.nextStrict }}" --target "${{ github.sha }}"
-
-#      - name: Tag Release
-#        env:
-#          TAG: ${{ steps.version.outputs.nextStrict }}
-#        run: |
-#          git tag ${TAG} ${GITHUB_SHA}
-#          git push origin ${TAG}
-
-      - name: Publish package to Maven Central
+      - name: Publish to Maven Central
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USER }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_TOKEN }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_PRIVATE_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.GPG_PUBLIC_KEY_ID }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_PASSPHRASE }}
-#          COMMONS_RELEASE_VERSION: ${{ steps.version.outputs.nextStrict }}?
         run: |
           chmod +x gradlew
-#          ./gradlew publishToMavenCentral
-          ./gradlew publish
+          ./gradlew publishToMavenCentral
