@@ -1,3 +1,5 @@
+[![Java CI with Gradle](https://github.com/jon1van/commons/actions/workflows/ci.yml/badge.svg)](https://github.com/jon1van/commons/actions/workflows/ci.yml)
+
 # jon1van's Commons
 
 This project contains 5 mini-libraries for use in Java projects.
@@ -17,7 +19,7 @@ This package simplifies using time-stamped location data.
 The core
 classes [LatLong](./commons-units/src/main/java/io/github/jon1van/units/LatLong.java), [Distance](./commons-units/src/main/java/io/github/jon1van/units/Distance.java), [Speed](./commons-units/src/main/java/io/github/jon1van/units/Speed.java), [Course](./commons-units/src/main/java/io/github/jon1van/units/Course.java),
 [TimeWindow](./commons-units/src/main/java/io/github/jon1van/units/TimeWindow.java) and others provide a literate API
-for common tasks while correctly handling annoying issues (e.g., accounting for curvature of the earth, and making sure
+for common tasks while correctly handling error-prone issues (e.g., accounting for curvature of the earth, and making sure
 distance unit conversions are always correct).
 
 [LatLong](./commons-units/src/main/java/io/github/jon1van/units/LatLong.java)

@@ -49,6 +49,19 @@ jobs:
       - name: Display version
         run: echo "Publishing version ${{ needs.unit.outputs.version }}"
 
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "${{ needs.unit.outputs.version }}" --target "${{ github.sha }}"
+
+      - name: Tag Release
+        env:
+          TAG: ${{ needs.unit.outputs.version }}
+        run: |
+          git tag ${TAG} ${GITHUB_SHA}
+          git push origin ${TAG}
+
       - name: Publish to Maven Central
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USER }}
