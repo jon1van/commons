@@ -6,11 +6,11 @@ This project contains 5 mini-libraries for use in Java projects.
 
 ## The Modules
 
-- **[commons-units](#units)**
-- **[commons-map](#maps)**
-- **[commons-ids](#ids)**
-- **[commons-collect](#collect)**
-- **[commons-utils](#utils)**
+- **[commons-units](#units):** `io.github.jon1van:commons-units:1.0.0`
+- **[commons-map](#maps):** `io.github.jon1van:commons-maps:1.0.0`
+- **[commons-ids](#ids:)** `io.github.jon1van:commons-id:1.0.0`
+- **[commons-collect](#collect):** `io.github.jon1van:commons-collect:1.0.0`
+- **[commons-utils](#utils):** `io.github.jon1van:commons-utils:1.0.0`
 
 ## Units
 
@@ -45,6 +45,15 @@ Instant startTime = window.start();
 Instant endTime = window.end();
 ```
 
+### Documentation
+
+- [Getting Started](./commons-units/docs/01-getting-started.md) - Overview and quick examples
+- [Measurement Units](./commons-units/docs/02-measurement-units.md) - Distance, Speed, Acceleration, Course
+- [Geospatial](./commons-units/docs/03-geospatial.md) - LatLong, Navigation utilities
+- [Temporal](./commons-units/docs/04-temporal.md) - Time utilities, TimeWindow
+- [Positions](./commons-units/docs/05-positions.md) - Position, KineticPosition
+- [Collections](./commons-units/docs/06-collections.md) - LatLongPath, CollectionUtils
+
 ## Maps
 
 This package draws custom maps on top of MapBox Tiles. The public entry points
@@ -73,6 +82,13 @@ MapBuilder.newMapBuilder()
 
 Additional Map making documentation is [here](./docs/mapping.md)
 
+### Documentation
+
+- [Getting Started](./commons-maps/docs/01-getting-started.md) - Overview and quick examples
+- [Map Creation](./commons-maps/docs/02-map-creation.md) - MapBuilder and MapImage
+- [Features](./commons-maps/docs/03-features.md) - Drawing circles, lines, shapes, text
+- [Tile Servers](./commons-maps/docs/04-tile-servers.md) - Tile sources and caching
+
 ## Ids
 
 This tiny package is for importing [TimeId](./commons-ids/src/main/java/io/github/jon1van/ids/TimeId.java)
@@ -84,6 +100,13 @@ your problem requires **absolutely no collisions** and _"approximate chronologic
 It is similar to UUID v7 and Snowflake
 ID. [SmallTimeId](./commons-ids/src/main/java/io/github/jon1van/ids/SmallTimeId.java) uses half the size (64 bits) but
 requires meeting certain constraints to use it safely. Learn more [here](./docs/timeIdDesign.md)
+
+### Documentation
+
+- [Getting Started](./commons-ids/docs/01-getting-started.md) - Overview and comparison
+- [TimeId](./commons-ids/docs/02-time-id.md) - 128-bit stateless IDs
+- [SmallTimeId](./commons-ids/docs/03-small-time-id.md) - 63-bit efficient IDs
+- [Distributed Generation](./commons-ids/docs/04-distributed.md) - IdFactoryShard for distributed systems
 
 ## Collect
 
@@ -124,6 +147,12 @@ hashedSequence.insertAfter("y", "e");
 hashedSequence.getElementAfter("x");  // return "e"
 hashedSequence.getElementBefore("y");  // returns "e"
 ```
+
+### Documentation
+
+- [Getting Started](./commons-collect/docs/01-getting-started.md) - Overview and quick examples
+- [MetricTree & MetricSet](./commons-collect/docs/02-metric-structures.md) - Spatial search structures
+- [HashedLinkedSequence](./commons-collect/docs/03-hashed-linked-sequence.md) - Hybrid ordered set
 
 ## Utils
 
