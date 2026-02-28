@@ -7,7 +7,7 @@ plugins {
 // Set's the parent and ALL child modules' group & Version
 allprojects {
     group = "io.github.jon1van"
-    version = "1.0.1-SNAPSHOT"
+    version = "1.0.1"
 
     repositories {
         mavenCentral()

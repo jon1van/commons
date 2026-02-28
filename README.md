@@ -8,7 +8,7 @@ This project contains 5 mini-libraries for use in Java projects.
 
 - **[commons-units](#units):** `io.github.jon1van:commons-units:1.0.0`
 - **[commons-map](#maps):** `io.github.jon1van:commons-maps:1.0.0`
-- **[commons-ids](#ids:)** `io.github.jon1van:commons-id:1.0.0`
+- **[commons-ids](#Ids):** `io.github.jon1van:commons-id:1.0.0`
 - **[commons-collect](#collect):** `io.github.jon1van:commons-collect:1.0.0`
 - **[commons-utils](#utils):** `io.github.jon1van:commons-utils:1.0.0`
 
